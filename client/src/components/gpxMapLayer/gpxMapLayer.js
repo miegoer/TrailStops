@@ -1,12 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useMap, } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet-gpx';
 import 'leaflet/dist/leaflet.css';
 
 
-
-const GPXLayer = ({ gpxFile }) => {
+const GPXLayer = ({ gpxFile, passRoute }) => {
   const map = useMap();
 
   useEffect(() => {
@@ -18,8 +17,10 @@ const GPXLayer = ({ gpxFile }) => {
 
     gpx.addTo(map);
 
-    gpx.on('loaded', (e) => {
-      map.fitBounds(e.target.getBounds());
+    gpx.on('loaded', () => {
+      const route = gpx.getLayers();
+      passRoute(route);
+      map.fitBounds(gpx.getBounds());
     });
 
     return () => {
@@ -27,7 +28,9 @@ const GPXLayer = ({ gpxFile }) => {
     };
   }, [map, gpxFile]);
 
+
   return null;
 };
+
 
 export default GPXLayer;
