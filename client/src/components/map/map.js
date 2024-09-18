@@ -1,24 +1,21 @@
-import './map.css';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import RoutingMachine from '../leafletRoutingMachine/leafletRoutingMachine';
+import 'leaflet-gpx'; // Import leaflet-gpx library
+import 'leaflet/dist/leaflet.css';
+import GPXLayer from './gpxMapLayer/gpxMapLayer';
 
-function Map() {
 
-  //middle point of West Highland Way
-  const position = [56.419955, -4.740438];
-  const startPoint = [55.941410, -4.317811];
-  const endPoint = [56.816415, -5.113943];
+const MapComponent = () => {
+  const gpxFile = '/WHW.gpx';
 
   return (
-    <div className="map" data-testid="map-container">
-      <MapContainer center={position} zoom={9} style={{ height: '100vh', width: '100%' }}>
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <RoutingMachine start={startPoint} end={endPoint}/>
-      </MapContainer>
-    </div>
+    <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: '100vh', width: '100%' }}>
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      />
+      <GPXLayer gpxFile={gpxFile} />
+    </MapContainer>
   );
-}
+};
 
-export default Map;
+export default MapComponent;
