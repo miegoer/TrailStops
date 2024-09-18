@@ -1,14 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-it('renders leaflet map on loading', () => {
+it('renders Leaflet map on loading', () => {
   render(<App />);
-  const linkElement = screen.getByText(/map/i);
-  expect(linkElement).toBeInTheDocument();
+  const mapContainer = screen.getByTestId('map-container');
+  expect(mapContainer).toBeInTheDocument();
 });
 
-test('renders learn react link', () => {
+it('adds route to of map on loading' , () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+  const routeContainer = screen.getByTestId('route-container');
+  expect(routeContainer).toBeInTheDocument();
+})
