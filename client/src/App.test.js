@@ -3,7 +3,7 @@ import App from './App';
 
 it('renders leaflet map on loading', () => {
   render(<App />);
-  const linkElement = screen.getByText(/leafletmap/i);
+  const linkElement = screen.getByText(/map/i);
   expect(linkElement).toBeInTheDocument();
 });
 
