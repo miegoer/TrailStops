@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { useMap } from 'react-leaflet';
+import { useMap, } from 'react-leaflet';
 import L from 'leaflet';
-import 'leaflet-gpx'; // Import leaflet-gpx library
+import 'leaflet-gpx';
 import 'leaflet/dist/leaflet.css';
+
 
 
 const GPXLayer = ({ gpxFile }) => {
@@ -13,11 +14,6 @@ const GPXLayer = ({ gpxFile }) => {
 
     const gpx = new L.GPX(gpxFile, {
       async: true,
-      marker_options: {
-        startIconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
-        endIconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-red.png',
-        shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
-      }
     });
 
     gpx.addTo(map);
