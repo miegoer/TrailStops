@@ -38,6 +38,7 @@ function SearchResultScreen() {
       ) : (
         <p>No closest point data available.</p>
       )}
+      <button onClick={() => window.history.back()}>Back</button>
     </div>
   )
 }

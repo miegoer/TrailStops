@@ -31,11 +31,13 @@ const MapComponent = () => {
   useEffect(() => {
     DBService.getMarkers("aidan@test.com").then((data) => {
       if (data) {
-        for(let i=0; i<data.points.length; i++) {
-          setMarkers((prevMarkers) => [...prevMarkers, L.latLng([data.points[i][1], data.points[i][0]])]);
-        }
+        // for(let i=0; i<data.points.length; i++) {
+        //   setMarkers((prevMarkers) => [...prevMarkers, L.latLng([data.points[i][1], data.points[i][0]])]);
+        // }
+        if (data.points.length > 0) {
+          setMarkers(data.points);
       }
-    });
+    }});
   }, []);
 
   const MapClickHandler = () => {
@@ -44,9 +46,15 @@ const MapComponent = () => {
         const { lat, lng } = e.latlng;
         if (gpxRoute) {
           const closestPoint = closestPoints([lat, lng]);
-          setMarkers((prevMarkers) => [...prevMarkers, L.latLng([closestPoint[1], closestPoint[0]])]);
-          DBService.addMarker("aidan@test.com", [closestPoint], []);
-          navigate('/search', {state: { closestPoint }});
+          setMarkers((prevMarkers) => {
+            const updatedMarkers = [...prevMarkers, L.latLng([closestPoint[1], closestPoint[0]])]
+            console.log("markers", updatedMarkers)
+            DBService.addMarker("aidan@test.com", updatedMarkers, []);
+            return updatedMarkers;
+          });
+          setTimeout(() => {
+            navigate('/search', {state: { closestPoint }});
+          }, 100)
         }
       },
     });
