@@ -4,8 +4,8 @@ import 'leaflet-gpx';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import GPXLayer from '../gpxMapLayer/gpxMapLayer';
-import * as turf from '@turf/turf';
 import routeData from '../../routeData';
+import closestPoints from './closestPoint';
 
 const defaultIcon = L.icon({
   iconUrl: '/map-pin.svg',
@@ -29,14 +29,9 @@ const MapComponent = () => {
     useMapEvents({
       click(e) {
         const { lat, lng } = e.latlng;
-        const point = turf.point([lat, lng]);
-        console.log('point:', point);
         if (gpxRoute) {
-          console.log('routeData:', routeData);
-          const closestPoint = turf.nearestPointOnLine(routeData, point);
-          console.log(closestPoint);
-          console.log([closestPoint.geometry.coordinates[1], closestPoint.geometry.coordinates[0]]);
-          setMarkers((prevMarkers) => [...prevMarkers, L.latLng([closestPoint.geometry.coordinates[1], closestPoint.geometry.coordinates[0]])]);
+          const closestPoint = closestPoints([lat, lng]);
+          setMarkers((prevMarkers) => [...prevMarkers, L.latLng([closestPoint[1], closestPoint[0]])]);
         }
       },
     });

@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useMap, } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet-gpx';
 import 'leaflet/dist/leaflet.css';
 
 
-const GPXLayer = ({ gpxFile, passRoute }) => {
+const GPXLayer = ({ gpxFile, passRoute}) => {
   const map = useMap();
 
   useEffect(() => {
@@ -13,6 +13,9 @@ const GPXLayer = ({ gpxFile, passRoute }) => {
 
     const gpx = new L.GPX(gpxFile, {
       async: true,
+      polyline_options: {
+        weight: 8
+      },
     });
 
     gpx.addTo(map);
