@@ -4,8 +4,8 @@ import 'leaflet-gpx';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import GPXLayer from '../gpxMapLayer/gpxMapLayer';
-import routeData from '../../routeData';
 import closestPoints from './closestPoint';
+import { getNearAccommodations } from '../../services/googleAPIService';
 
 const defaultIcon = L.icon({
   iconUrl: '/map-pin.svg',
@@ -32,6 +32,7 @@ const MapComponent = () => {
         if (gpxRoute) {
           const closestPoint = closestPoints([lat, lng]);
           setMarkers((prevMarkers) => [...prevMarkers, L.latLng([closestPoint[1], closestPoint[0]])]);
+          console.log(getNearAccommodations(lat, lng))
         }
       },
     });
