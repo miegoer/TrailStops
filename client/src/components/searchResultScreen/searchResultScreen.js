@@ -26,15 +26,23 @@ function SearchResultScreen() {
     <div className='searchResultScreen'>
         <h1>Search Result Screen</h1>
       {closestPoint ? (
+        <div>
         <ul>
           {nearAccommodation && nearAccommodation.length > 0 ? (
             nearAccommodation.map((accommodation, index) => (
+              <div key={index}>
               <li key={index}>{accommodation}</li>
+              <button onClick={() => console.log(accommodation)}>Select</button>
+              </div>
             ))
+              
           ) : (
-            <p>No accommodations found.</p>
+            <p>No accommodation found.</p>
           )}
         </ul>
+        <p>Wild Camping</p>
+        <button onClick={() => console.log('wildcamping')}>Select</button>
+        </div>
       ) : (
         <p>No closest point data available.</p>
       )}
