@@ -5,7 +5,8 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import GPXLayer from '../gpxMapLayer/gpxMapLayer';
 import closestPoints from './closestPoint';
-import { getNearAccommodations } from '../../services/googleAPIService';
+import { extractAccomodations} from '../../services/googleAPIService';
+import { useNavigate } from 'react-router-dom';
 
 const defaultIcon = L.icon({
   iconUrl: '/map-pin.svg',
@@ -19,7 +20,7 @@ const MapComponent = () => {
   const gpxFile = '/WHW.gpx';
   const [markers, setMarkers] = useState([]);
   const [gpxRoute, setGpxRoute] = useState([]);
-
+  const navigate = useNavigate();
 
   const setGpxRouteFunc = (route) => {
     setGpxRoute(route);
@@ -32,7 +33,8 @@ const MapComponent = () => {
         if (gpxRoute) {
           const closestPoint = closestPoints([lat, lng]);
           setMarkers((prevMarkers) => [...prevMarkers, L.latLng([closestPoint[1], closestPoint[0]])]);
-          console.log(getNearAccommodations(lat, lng))
+          
+          navigate('/search', {state: { closestPoint }});
         }
       },
     });
