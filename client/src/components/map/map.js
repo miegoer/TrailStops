@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, useMapEvents, Marker } from 'react-leaflet';
 import 'leaflet-gpx';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import GPXLayer from '../gpxMapLayer/gpxMapLayer';
 import closestPoints from './closestPoint';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import DBService from '../../services/DBService';
 
 const defaultIcon = L.icon({
   iconUrl: '/map-pin.svg',
@@ -20,10 +21,22 @@ const MapComponent = () => {
   const [markers, setMarkers] = useState([]);
   const [gpxRoute, setGpxRoute] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { email } = location.state || {};
 
   const setGpxRouteFunc = (route) => {
     setGpxRoute(route);
   }
+
+  useEffect(() => {
+    DBService.getMarkers("aidan@test.com").then((data) => {
+      if (data) {
+        for(let i=0; i<data.points.length; i++) {
+          setMarkers((prevMarkers) => [...prevMarkers, L.latLng([data.points[i][1], data.points[i][0]])]);
+        }
+      }
+    });
+  }, []);
 
   const MapClickHandler = () => {
     useMapEvents({
@@ -32,7 +45,7 @@ const MapComponent = () => {
         if (gpxRoute) {
           const closestPoint = closestPoints([lat, lng]);
           setMarkers((prevMarkers) => [...prevMarkers, L.latLng([closestPoint[1], closestPoint[0]])]);
-          
+          DBService.addMarker("aidan@test.com", [closestPoint], []);
           navigate('/search', {state: { closestPoint }});
         }
       },

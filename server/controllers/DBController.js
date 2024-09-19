@@ -19,7 +19,7 @@ exports.addMarker = async (req, res) => {
     res.status(500).send("Server Error");
   }
 }
-
+// TODO: add password hashing
 exports.addUser = async (req, res) => {
   try {
   const { name, email, password } = req.body;
