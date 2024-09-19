@@ -5,7 +5,6 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import GPXLayer from '../gpxMapLayer/gpxMapLayer';
 import closestPoints from './closestPoint';
-import { extractAccomodations} from '../../services/googleAPIService';
 import { useNavigate } from 'react-router-dom';
 
 const defaultIcon = L.icon({
