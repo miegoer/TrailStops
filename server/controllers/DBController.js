@@ -21,6 +21,18 @@ exports.addMarker = async (req, res) => {
     res.status(500).send(`Server Error: ${error}`);
   }
 }
+
+exports.removeMarker = async (req, res) => {
+  try {
+    const { user_id, _id } = req.body;
+    console.log(user_id, _id);
+    const response = await UserMarkers.deleteOne({user_id:user_id, _id:_id})
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).send(`Server Error: ${error}`);
+  }
+}
+
 // TODO: add password hashing
 exports.addUser = async (req, res) => {
   try {
@@ -58,3 +70,4 @@ exports.addAccommodation = async (req, res) => {
     res.status(500).send(`Server Error: ${error}`);
   }
 }
+

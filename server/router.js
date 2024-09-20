@@ -3,16 +3,16 @@ const router = express.Router();
 const Accomodation = require('./controllers/apiController');
 const DB = require('./controllers/DBController')
 
-router.get('/getAccomodation', (req, res) => {
-  Accomodation.getAccomodation(req, res);
-});
-
 router.get('/mapMarkers', (req, res) => {
   DB.getMarkers(req, res);
 });
 
 router.post('/mapMarkers', (req, res) => {
   DB.addMarker(req, res);
+})
+
+router.delete('/mapMarkers', (req, res) => {
+  DB.removeMarker(req, res);
 })
 
 router.post('/user', (req, res) => {
@@ -30,5 +30,10 @@ router.get('/accommodation', (req, res) => {
 router.put('/accommodation', (req, res) => {
   DB.addAccommodation(req, res);
 })
+
+router.get('/getAccomodation', (req, res) => {
+  Accomodation.getAccomodation(req, res);
+});
+
 
 module.exports = router;

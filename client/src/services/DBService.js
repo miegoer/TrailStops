@@ -78,5 +78,21 @@ async function addAccommodation(email, hotel, markerId) {
   }
 }
 
-const DBService = { getMarkers, addMarker, addUser, getUser, getAccommodation, addAccommodation };
+async function removeMarker(userId, markerId) {
+  try {
+    const response = await fetch('http://localhost:3001/mapMarkers', {
+      method:'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({user_id: userId,_id: markerId}),
+    })
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("Error removing marker:", error);
+  }
+}
+
+const DBService = { getMarkers, addMarker, addUser, getUser, getAccommodation, addAccommodation, removeMarker };
 export default DBService;
