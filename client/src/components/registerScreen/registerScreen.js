@@ -16,8 +16,9 @@ function RegisterScreen() {
 
   return (
     <div className="registerScreen">
-      <h1>Register</h1>
+      <h1>TrailStop</h1>
       <form onSubmit={handleSubmit}>
+        <h2 id='register'>Register</h2>
         <label htmlFor='name'>Name</label>
         <input type ='text' id='name' value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} required/>
 

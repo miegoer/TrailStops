@@ -30,7 +30,7 @@ function SearchResultScreen() {
 
   function updateAccommodation (accommodation) {
     setSelectedAccommodation(accommodation)
-    DBService.addAccommodation("aidan@test.com", accommodation)
+    DBService.addAccommodation("aidan@test.com", accommodation, index)
   }
 
   return (
@@ -57,10 +57,11 @@ function SearchResultScreen() {
       ) : (
         <p>No closest point data available.</p>
       )}
-      <p>selectedAccommodation : 
-        {selectedAccommodation === "" ? " no accommodation selected" : selectedAccommodation}
+      <p>Selected accommodation: 
+        {selectedAccommodation === "" ? " no accommodation selected" : ` ${selectedAccommodation}`}
       </p>
       <button onClick={() => window.history.back()}>Back</button>
+      <button>Delete Marker</button>
     </div>
   )
 }

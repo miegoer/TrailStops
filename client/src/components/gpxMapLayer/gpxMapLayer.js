@@ -3,6 +3,7 @@ import { useMap, } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet-gpx';
 import 'leaflet/dist/leaflet.css';
+import './gpxMapLayer.css'
 
 
 const GPXLayer = ({ gpxFile, passRoute}) => {
@@ -14,8 +15,9 @@ const GPXLayer = ({ gpxFile, passRoute}) => {
     const gpx = new L.GPX(gpxFile, {
       async: true,
       polyline_options: {
-        weight: 8
-      },
+        weight: 8,
+        color: '#c64242'
+      }
     });
 
     gpx.addTo(map);

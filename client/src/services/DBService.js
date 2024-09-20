@@ -60,23 +60,23 @@ async function getAccommodation (email) {
   }
 }
 
-async function addAccommodation (email, hotels) {
+async function addAccommodation(email, hotels, index) {
   try {
     let response1 = await fetch(`http://localhost:3001/accommodation?user_id=${email}`);
-    response1 = await response1.json()
-    console.log(response1);
-    response1 = [...response1.hotels, hotels]
-    const response2 = await fetch ('http://localhost:3001/accommodation', {
+    response1 = await response1.json();
+    response1.hotels[index] = hotels;
+    const response2 = await fetch('http://localhost:3001/accommodation', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({user_id: email, hotels: response1}),
-    })
+      body: JSON.stringify({ user_id: email, hotels: response1.hotels }),
+    });
+
     const data = await response2.json();
     return data;
   } catch (error) {
-    console.log("Error adding user:", error);
+    console.log("Error adding accommodation:", error);
   }
 }
 

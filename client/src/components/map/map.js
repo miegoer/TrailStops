@@ -21,8 +21,6 @@ const MapComponent = () => {
   const [markers, setMarkers] = useState([]);
   const [gpxRoute, setGpxRoute] = useState([]);
   const navigate = useNavigate();
-  const location = useLocation();
-  const { email } = location.state || {};
 
   const setGpxRouteFunc = (route) => {
     setGpxRoute(route);
@@ -49,7 +47,7 @@ const MapComponent = () => {
             return updatedMarkers;
           });
           setTimeout(() => {
-            navigate('/search', {state: { closestPoint }});
+            navigate('/search', {state: { closestPoint, index: markers.length }});
           }, 100)
         }
       },
@@ -63,7 +61,7 @@ const MapComponent = () => {
   }
 
   return (
-    <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: '97vh', width: '100%' }} >
+    <MapContainer zoom={13} style={{ height: '100vh', width: '100%' }} zoomControl={false} >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
