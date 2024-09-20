@@ -5,8 +5,9 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import GPXLayer from '../gpxMapLayer/gpxMapLayer';
 import closestPoints from './closestPoint';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import DBService from '../../services/DBService';
+import { v4 as uuidv4 } from 'uuid';
 
 const defaultIcon = L.icon({
   iconUrl: '/map-pin.svg',
@@ -18,7 +19,7 @@ const defaultIcon = L.icon({
 
 const MapComponent = () => {
   const gpxFile = '/WHW.gpx';
-  const [markers, setMarkers] = useState([]);
+  const [markers, setMarkers] = useState({});
   const [gpxRoute, setGpxRoute] = useState([]);
   const navigate = useNavigate();
 
@@ -29,10 +30,9 @@ const MapComponent = () => {
   useEffect(() => {
     DBService.getMarkers("aidan@test.com").then((data) => {
       if (data) {
-        if (data.length > 0) {
-          setMarkers(data);
-      }
-    }});
+        setMarkers(data);
+        }
+      });
   }, []);
 
   const MapClickHandler = () => {
@@ -41,13 +41,20 @@ const MapComponent = () => {
         const { lat, lng } = e.latlng;
         if (gpxRoute) {
           const closestPoint = closestPoints([lat, lng]);
+          const newMarker = {
+            _id: uuidv4(),
+            user_id: 'aidan@test.com',
+            position: L.latLng([closestPoint[0], closestPoint[1]]),
+            hotel: ""
+          };
+
           setMarkers((prevMarkers) => {
-            const updatedMarkers = [...prevMarkers, L.latLng([closestPoint[1], closestPoint[0]])]
-            DBService.addMarker("aidan@test.com", updatedMarkers);
+            const updatedMarkers = {...prevMarkers, [newMarker._id]:newMarker};
+            DBService.addMarker("aidan@test.com", newMarker);
             return updatedMarkers;
           });
           setTimeout(() => {
-            navigate('/search', {state: { closestPoint, index: markers.length }});
+            navigate('/search', {state: { marker:newMarker }});
           }, 100)
         }
       },
@@ -55,9 +62,8 @@ const MapComponent = () => {
     return null;
   };
 
-  const MarkerClickHandler = (index, closestPoint) => {
-    closestPoint = closestPoints([closestPoint.lat, closestPoint.lng])
-    navigate('/search', {state: { index: index, closestPoint: closestPoint }})
+  const MarkerClickHandler = (marker) => {
+    navigate('/search', {state: { marker: marker }})
   }
 
   return (
@@ -66,8 +72,8 @@ const MapComponent = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <GPXLayer gpxFile={gpxFile} passRoute={setGpxRouteFunc}/>
-      {markers.map((marker, index) => (
-        <Marker key={index} position={[marker.lat, marker.lng]} icon={defaultIcon} eventHandlers={{ click: () => MarkerClickHandler(index, marker)}}/>
+      {Object.values(markers || {}).map((marker) => (
+        <Marker key={marker._id} position={[marker.position.lng, marker.position.lat]} icon={defaultIcon} eventHandlers={{ click: () => MarkerClickHandler(marker)}}/>
       ))}
       <MapClickHandler />
     </MapContainer>

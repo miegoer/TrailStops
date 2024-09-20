@@ -8,13 +8,17 @@ const userSchema = new Schema({
   password: String
 });
 
-const UserMapSchema = new Schema({
-  user_id: String,
-  points: Array,
-  hotels: Array
+const UserMarkersSchema = new mongoose.Schema({
+  _id: { type: String, required: true },
+  user_id: { type: String, required: true },
+  position: {
+    lat: { type: Number, required: true },
+    lng: { type: Number, required: true }
+  },
+  hotel: { type: String }
 });
 
 const User = mongoose.model('User', userSchema);
-const UserMap = mongoose.model('UserMap', UserMapSchema);
+const UserMarkers = mongoose.model('UserMarkers', UserMarkersSchema);
 
-module.exports = { User, UserMap };
+module.exports = { User, UserMarkers };

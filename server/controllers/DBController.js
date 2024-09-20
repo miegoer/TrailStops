@@ -1,22 +1,24 @@
-const { User, UserMap } = require('../models/schema');
+const { User, UserMarkers } = require('../models/schema');
 
 exports.getMarkers = async (req, res) => {
   try {
     const { user_id } = req.query;
-    const response = await UserMap.findOne({ user_id });
-    res.status(200).json(response.points);
+    const response = await UserMarkers.find({user_id: user_id})
+    const positions = response.map(marker => marker);
+    res.status(200).json(positions);
   } catch (error) {
-    res.status(500).send("Server Error");
+    res.status(500).send(`Server Error: ${error}`);
   }
 }
 
 exports.addMarker = async (req, res) => {
   try {
-    const { user_id, points} = req.body;
-    const response = await UserMap.updateOne({user_id: user_id}, {points: points});
+    const { _id, user_id, marker } = req.body;
+    const newMarker = new UserMarkers({user_id: user_id, position: marker.position, hotel: marker.hotel, _id:_id}) 
+    const response = await newMarker.save();
     res.status(200).json(response);
   } catch (error) {
-    res.status(500).send("Server Error");
+    res.status(500).send(`Server Error: ${error}`);
   }
 }
 // TODO: add password hashing
@@ -24,12 +26,10 @@ exports.addUser = async (req, res) => {
   try {
   const { name, email, password } = req.body;
   const newUser = new User({ name, email, password });
-  const newUserMap = new UserMap({ user_id: newUser.email, points: [], hotels: [] });
-  const mapResponse = await newUserMap.save();
   const response = await newUser.save();
   res.status(200).json(response);
   } catch (error) {
-    res.status(500).send("Server Error");
+    res.status(500).send(`Server Error: ${error}`);
   }
 }
 
@@ -41,21 +41,20 @@ exports.getUser = async (req, res) => {
 
 exports.getAccommodation = async (req, res) => {
   try {
-  const { user_id } = req.query;
-  const response = await UserMap.findOne({ user_id });
-  console.log(response.hotels)
-  res.status(200).json(response);
+  const { user_id, markerId } = req.query;
+  const accommodation = await UserMarkers.findOne({ user_id: user_id, _id:markerId });
+  res.status(200).json(accommodation);
   } catch (error) {
-    res.status(500).send("Server Error");
+    res.status(500).send(`Server Error: ${error}`);
   }
 }
 
 exports.addAccommodation = async (req, res) => {
   try {
-    const { user_id, hotels } = req.body;
-    const response = await UserMap.updateOne({user_id: user_id}, {hotels: hotels});
+    const { user_id, hotel, markerId } = req.body;
+    const response = await UserMarkers.updateOne({user_id: user_id, _id: markerId}, {hotel: hotel});
     res.status(200).json(response);
   } catch (error) {
-    res.status(500).send("Server Error");
+    res.status(500).send(`Server Error: ${error}`);
   }
 }

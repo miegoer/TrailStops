@@ -27,7 +27,7 @@ router.get('/accommodation', (req, res) => {
   DB.getAccommodation(req, res);
 })
 
-router.post('/accommodation', (req, res) => {
+router.put('/accommodation', (req, res) => {
   DB.addAccommodation(req, res);
 })
 

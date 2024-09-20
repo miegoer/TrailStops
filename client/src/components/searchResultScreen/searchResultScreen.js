@@ -6,37 +6,44 @@ import DBService from '../../services/DBService';
 
 function SearchResultScreen() {
   const location = useLocation();
-  const { closestPoint, index } = location.state || {};
+  const { marker } = location.state || {};
   const [nearAccommodation, setNearAccommodation] = useState([]);
   const [selectedAccommodation, setSelectedAccommodation] = useState("")
 
 
   useEffect(() => {
-    if (closestPoint) {
-      const [lat, lon] = closestPoint;
+    if (marker.position) {
+      const [lat, lon] = [marker.position.lat, marker.position.lng];
       extractAccomodations(lon, lat)
         .then((data) => {
           setNearAccommodation(Array.isArray(data) ? data : []);
-
         })
       }
-       if (index >= 0) {
-        DBService.getAccommodation("aidan@test.com")
-        .then((data) => {
-          setSelectedAccommodation(data.hotels[index]);
+       if (marker._id) {
+        DBService.getAccommodation("aidan@test.com", marker._id) //WORK FROM HERE ADD THE MarkerId
+        .then((hotel) => {
+          if (hotel) {
+            setSelectedAccommodation(hotel.hotel);
+        } else {
+          console.error("Markers data is not in the expected format", hotel);
+        }
         })
       }
   }, []);
 
   function updateAccommodation (accommodation) {
     setSelectedAccommodation(accommodation)
-    DBService.addAccommodation("aidan@test.com", accommodation, index)
+    DBService.addAccommodation("aidan@test.com", accommodation, marker._id)
   }
+
+  const deleteMarker = (marker) => {
+    DBService.removeMarker("aidan@test.com", marker._id);
+  };
 
   return (
     <div className='searchResultScreen'>
         <h1>Search Result Screen</h1>
-      {closestPoint ? (
+      {marker.position ? (
         <div>
         <ul>
           {nearAccommodation && nearAccommodation.length > 0 ? (
@@ -61,7 +68,7 @@ function SearchResultScreen() {
         {selectedAccommodation === "" ? " no accommodation selected" : ` ${selectedAccommodation}`}
       </p>
       <button onClick={() => window.history.back()}>Back</button>
-      <button>Delete Marker</button>
+      <button onClick={() => deleteMarker(marker.id)}>Delete Marker</button>
     </div>
   )
 }

@@ -8,14 +8,15 @@ async function getMarkers (user_id) {
   }
 }
 
-async function addMarker (user_id, points) {
+async function addMarker (user_id, marker) {
   try {
+    const _id = marker._id
   const response = await fetch('http://localhost:3001/mapMarkers', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({user_id: user_id, points: points}),
+    body: JSON.stringify({_id: _id, user_id: user_id, marker: marker}),
   })
   const data = await response.json();
   return data;
@@ -50,9 +51,9 @@ async function getUser (email) {
   }
 }
 
-async function getAccommodation (email) {
+async function getAccommodation (email, markerId) {
   try {
-    const response = await fetch(`http://localhost:3001/accommodation?user_id=${email}`);
+    const response = await fetch(`http://localhost:3001/accommodation?user_id=${email}&markerId=${markerId}`);
     const data = await response.json();
     return data;
   } catch (error) {
@@ -60,20 +61,17 @@ async function getAccommodation (email) {
   }
 }
 
-async function addAccommodation(email, hotels, index) {
+async function addAccommodation(email, hotel, markerId) {
   try {
-    let response1 = await fetch(`http://localhost:3001/accommodation?user_id=${email}`);
-    response1 = await response1.json();
-    response1.hotels[index] = hotels;
-    const response2 = await fetch('http://localhost:3001/accommodation', {
-      method: 'POST',
+    const response = await fetch('http://localhost:3001/accommodation', {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ user_id: email, hotels: response1.hotels }),
+      body: JSON.stringify({ user_id: email, hotel: hotel, markerId: markerId }),
     });
 
-    const data = await response2.json();
+    const data = await response.json();
     return data;
   } catch (error) {
     console.log("Error adding accommodation:", error);
