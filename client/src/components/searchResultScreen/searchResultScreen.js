@@ -2,25 +2,36 @@ import './searchResultScreen.css';
 import { useLocation } from 'react-router-dom';
 import { extractAccomodations } from '../../services/googleAPIService';
 import { useState, useEffect } from 'react';
+import DBService from '../../services/DBService';
 
 function SearchResultScreen() {
   const location = useLocation();
-  const { closestPoint } = location.state || {};
+  const { closestPoint, index } = location.state || {};
   const [nearAccommodation, setNearAccommodation] = useState([]);
+  const [selectedAccommodation, setSelectedAccommodation] = useState("")
+
 
   useEffect(() => {
     if (closestPoint) {
       const [lat, lon] = closestPoint;
       extractAccomodations(lon, lat)
         .then((data) => {
-          // Ensure data is an array
           setNearAccommodation(Array.isArray(data) ? data : []);
+
         })
-      } else {
-        // Handle the case where closestPoint is not available
-        setNearAccommodation([]);
+      }
+       if (index >= 0) {
+        DBService.getAccommodation("aidan@test.com")
+        .then((data) => {
+          setSelectedAccommodation(data.hotels[index]);
+        })
       }
   }, []);
+
+  function updateAccommodation (accommodation) {
+    setSelectedAccommodation(accommodation)
+    DBService.addAccommodation("aidan@test.com", accommodation)
+  }
 
   return (
     <div className='searchResultScreen'>
@@ -32,7 +43,7 @@ function SearchResultScreen() {
             nearAccommodation.map((accommodation, index) => (
               <div key={index}>
               <li key={index}>{accommodation}</li>
-              <button onClick={() => console.log(accommodation)}>Select</button>
+              <button onClick={() => updateAccommodation(accommodation)}>Select</button>
               </div>
             ))
               
@@ -41,11 +52,14 @@ function SearchResultScreen() {
           )}
         </ul>
         <p>Wild Camping</p>
-        <button onClick={() => console.log('wildcamping')}>Select</button>
+        <button onClick={() => updateAccommodation("Wild Camping")}>Select</button>
         </div>
       ) : (
         <p>No closest point data available.</p>
       )}
+      <p>selectedAccommodation : 
+        {selectedAccommodation === "" ? " no accommodation selected" : selectedAccommodation}
+      </p>
       <button onClick={() => window.history.back()}>Back</button>
     </div>
   )

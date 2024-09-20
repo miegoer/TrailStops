@@ -31,11 +31,8 @@ const MapComponent = () => {
   useEffect(() => {
     DBService.getMarkers("aidan@test.com").then((data) => {
       if (data) {
-        // for(let i=0; i<data.points.length; i++) {
-        //   setMarkers((prevMarkers) => [...prevMarkers, L.latLng([data.points[i][1], data.points[i][0]])]);
-        // }
-        if (data.points.length > 0) {
-          setMarkers(data.points);
+        if (data.length > 0) {
+          setMarkers(data);
       }
     }});
   }, []);
@@ -48,8 +45,7 @@ const MapComponent = () => {
           const closestPoint = closestPoints([lat, lng]);
           setMarkers((prevMarkers) => {
             const updatedMarkers = [...prevMarkers, L.latLng([closestPoint[1], closestPoint[0]])]
-            console.log("markers", updatedMarkers)
-            DBService.addMarker("aidan@test.com", updatedMarkers, []);
+            DBService.addMarker("aidan@test.com", updatedMarkers);
             return updatedMarkers;
           });
           setTimeout(() => {
@@ -61,6 +57,11 @@ const MapComponent = () => {
     return null;
   };
 
+  const MarkerClickHandler = (index, closestPoint) => {
+    closestPoint = closestPoints([closestPoint.lat, closestPoint.lng])
+    navigate('/search', {state: { index: index, closestPoint: closestPoint }})
+  }
+
   return (
     <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: '97vh', width: '100%' }} >
       <TileLayer
@@ -68,7 +69,7 @@ const MapComponent = () => {
       />
       <GPXLayer gpxFile={gpxFile} passRoute={setGpxRouteFunc}/>
       {markers.map((marker, index) => (
-        <Marker key={index} position={[marker.lat, marker.lng]} icon={defaultIcon} />
+        <Marker key={index} position={[marker.lat, marker.lng]} icon={defaultIcon} eventHandlers={{ click: () => MarkerClickHandler(index, marker)}}/>
       ))}
       <MapClickHandler />
     </MapContainer>

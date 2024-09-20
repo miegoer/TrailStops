@@ -23,4 +23,12 @@ router.get('/user', (req, res) => {
   DB.getUser(req, res);
 })
 
+router.get('/accommodation', (req, res) => {
+  DB.getAccommodation(req, res);
+})
+
+router.post('/accommodation', (req, res) => {
+  DB.addAccommodation(req, res);
+})
+
 module.exports = router;
