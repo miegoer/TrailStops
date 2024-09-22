@@ -16,7 +16,8 @@ function RegisterScreen() {
 
   return (
     <div className="registerScreen">
-      <h1>TrailStop</h1>
+      <img className='backpack' src='backpack.png' alt='backpack'/>
+      <h1>TrailStops</h1>
       <form onSubmit={handleSubmit}>
         <h2 id='register'>Register</h2>
         <label htmlFor='name'>Name</label>

@@ -26,6 +26,7 @@ const GPXLayer = ({ gpxFile, passRoute}) => {
       const route = gpx.getLayers();
       passRoute(route);
       map.fitBounds(gpx.getBounds());
+
     });
 
     return () => {

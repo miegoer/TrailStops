@@ -88,7 +88,7 @@ const MapComponent = () => {
 
   return (
     <>
-    <MapContainer zoom={13} style={{ height: '100vh', width: '100%' }} zoomControl={false} >
+    <MapContainer minZoom={9} style={{ height: '100vh', width: '100%' }} zoomControl={false} >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
@@ -99,6 +99,8 @@ const MapComponent = () => {
       <MapClickHandler />
     </MapContainer>
     <button className='tripDetails' onClick={TripDetailsClickHandler}>Trip Details</button>
+    <img className='backpack' src='backpack.png' alt='backpack'/>
+    <img className='settings' src='settings.webp' alt='settings'/>
     </>
   );
 };

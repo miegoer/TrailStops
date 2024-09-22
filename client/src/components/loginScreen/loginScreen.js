@@ -22,6 +22,7 @@ function LoginScreen() {
 
   return (
     <div className="loginScreen">
+      <img className='backpack' src='backpack.png' alt='backpack'/>
       <h1>TrailStops</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">Email</label>
