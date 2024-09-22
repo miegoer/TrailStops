@@ -75,6 +75,7 @@ const MapComponent = () => {
 
   const MarkerClickHandler = (marker) => {
     if (marker) {
+      console.log("Marker clicked:", marker);
       navigate('/search', { state: { marker: marker } });
     } else {
       console.error("Marker not found in state");
