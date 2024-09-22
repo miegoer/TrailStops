@@ -15,7 +15,15 @@ const UserMarkersSchema = new mongoose.Schema({
     lat: { type: Number, required: true },
     lng: { type: Number, required: true }
   },
-  hotel: { type: String }
+  hotel: { type: String }, 
+  prevDist: {
+    dist: { type: Number, required: true },
+    time: { type: Number, required: true }
+  }, 
+  nextDist: {
+    dist: { type: Number, required: true },
+    time: { type: Number, required: true }
+  }
 });
 
 const User = mongoose.model('User', userSchema);

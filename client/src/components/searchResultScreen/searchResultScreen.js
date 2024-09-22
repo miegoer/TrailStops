@@ -14,7 +14,7 @@ function SearchResultScreen() {
 
   useEffect(() => {
     if (marker.position) {
-      const [lat, lon] = [marker.position.lat, marker.position.lng];
+      const [lon, lat] = [marker.position.lat, marker.position.lng];
       extractAccomodations(lon, lat)
         .then((data) => {
           setNearAccommodation(Array.isArray(data) ? data : []);
@@ -45,6 +45,10 @@ function SearchResultScreen() {
   return (
     <div className='searchResultScreen'>
         <h1>Search Result Screen</h1>
+        <h2>Previous Stop: {marker.prevDist?.dist ? `${marker.prevDist.dist} km` : 'N/A'}</h2>
+        <h3>Previous walking time: {marker.prevDist?.time ? `${marker.prevDist.time} hours` : 'N/A'}</h3>
+        <h2>Next Stop: {marker.nextDist?.dist ? `${marker.nextDist.dist} km` : 'N/A'}</h2>
+        <h3>Next walking time: {marker.nextDist?.time ? `${marker.nextDist.time} hours` : 'N/A'}</h3>
       {marker.position ? (
         <div>
         <ul>

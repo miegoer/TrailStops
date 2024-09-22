@@ -8,6 +8,7 @@ import closestPoints from './closestPoint';
 import { useNavigate } from 'react-router-dom';
 import DBService from '../../services/DBService';
 import { v4 as uuidv4 } from 'uuid';
+import routeCalculation from './routeCalculation';
 
 const defaultIcon = L.icon({
   iconUrl: '/map-pin.svg',
@@ -30,31 +31,40 @@ const MapComponent = () => {
   useEffect(() => {
     DBService.getMarkers("aidan@test.com").then((data) => {
       if (data) {
-        setMarkers(data);
+        const dataOut = data.reduce((acc, curr) => {
+          acc[curr._id] = curr;
+          return acc;
+        }, {})
+        console.log(dataOut);
+        setMarkers(dataOut);
         }
       });
   }, []);
 
   const MapClickHandler = () => {
     useMapEvents({
-      click(e) {
+      click: async (e) => { 
         const { lat, lng } = e.latlng;
         if (gpxRoute) {
           const closestPoint = closestPoints([lat, lng]);
           const newMarker = {
             _id: uuidv4(),
             user_id: 'aidan@test.com',
-            position: L.latLng([closestPoint[0], closestPoint[1]]),
-            hotel: ""
+            position: L.latLng([closestPoint[1], closestPoint[0]]),
+            hotel: "",
+            prevDist: { dist: 0, time: 0 },
+            nextDist: { dist: 0, time: 0 },
           };
 
-          setMarkers((prevMarkers) => {
-            const updatedMarkers = {...prevMarkers, [newMarker._id]:newMarker};
-            DBService.addMarker("aidan@test.com", newMarker);
-            return updatedMarkers;
-          });
+          let updatedMarkers = {...markers, [newMarker._id]:newMarker};
+
+          setMarkers(updatedMarkers);
+
+          const calculatedMarkers = await routeCalculation(Object.values(updatedMarkers));
+          setMarkers(calculatedMarkers);
+          DBService.addMarker("aidan@test.com", calculatedMarkers[newMarker._id], calculatedMarkers);
           setTimeout(() => {
-            navigate('/search', {state: { marker:newMarker }});
+            navigate('/search', {state: { marker:calculatedMarkers[newMarker._id] }});
           }, 100)
         }
       },
@@ -63,8 +73,12 @@ const MapComponent = () => {
   };
 
   const MarkerClickHandler = (marker) => {
-    navigate('/search', {state: { marker: marker }})
-  }
+    if (marker) {
+      navigate('/search', { state: { marker: marker } });
+    } else {
+      console.error("Marker not found in state");
+    }
+  };
 
   return (
     <MapContainer zoom={13} style={{ height: '100vh', width: '100%' }} zoomControl={false} >
@@ -73,7 +87,7 @@ const MapComponent = () => {
       />
       <GPXLayer gpxFile={gpxFile} passRoute={setGpxRouteFunc}/>
       {Object.values(markers || {}).map((marker) => (
-        <Marker key={marker._id} position={[marker.position.lng, marker.position.lat]} icon={defaultIcon} eventHandlers={{ click: () => MarkerClickHandler(marker)}}/>
+        <Marker key={marker._id} position={[marker.position.lat, marker.position.lng]} icon={defaultIcon} eventHandlers={{ click: () => MarkerClickHandler(marker)}}/>
       ))}
       <MapClickHandler />
     </MapContainer>

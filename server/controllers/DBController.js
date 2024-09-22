@@ -13,9 +13,13 @@ exports.getMarkers = async (req, res) => {
 
 exports.addMarker = async (req, res) => {
   try {
-    const { _id, user_id, marker } = req.body;
-    const newMarker = new UserMarkers({user_id: user_id, position: marker.position, hotel: marker.hotel, _id:_id}) 
-    const response = await newMarker.save();
+    const { _id, user_id, marker, updatedMarkers } = req.body;
+    const newMarker = new UserMarkers({user_id: user_id, position: marker.position, hotel: marker.hotel, _id:_id, nextDist: marker.nextDist, prevDist: marker.prevDist}); 
+    let response = await newMarker.save();
+    for (const key in updatedMarkers) {
+      console.log(key);
+      response = await UserMarkers.findOneAndUpdate({_id: key}, {prevDist: updatedMarkers[key].prevDist, nextDist: updatedMarkers[key].nextDist});
+    }
     res.status(200).json(response);
   } catch (error) {
     res.status(500).send(`Server Error: ${error}`);
@@ -25,7 +29,6 @@ exports.addMarker = async (req, res) => {
 exports.removeMarker = async (req, res) => {
   try {
     const { user_id, _id } = req.body;
-    console.log(user_id, _id);
     const response = await UserMarkers.deleteOne({user_id:user_id, _id:_id})
     res.status(200).json(response);
   } catch (error) {

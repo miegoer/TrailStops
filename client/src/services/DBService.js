@@ -8,7 +8,7 @@ async function getMarkers (user_id) {
   }
 }
 
-async function addMarker (user_id, marker) {
+async function addMarker (user_id, marker, updatedMarkers ) {
   try {
     const _id = marker._id
   const response = await fetch('http://localhost:3001/mapMarkers', {
@@ -16,7 +16,7 @@ async function addMarker (user_id, marker) {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({_id: _id, user_id: user_id, marker: marker}),
+    body: JSON.stringify({_id: _id, user_id: user_id, marker: marker, updatedMarkers: updatedMarkers}),
   })
   const data = await response.json();
   return data;
@@ -78,7 +78,7 @@ async function addAccommodation(email, hotel, markerId) {
   }
 }
 
-async function removeMarker(userId, markerId) {
+async function removeMarker(userId, markerId) { // TODO Fix bug where it marker is only delete after second attempt sometimes.
   try {
     const response = await fetch('http://localhost:3001/mapMarkers', {
       method:'DELETE',
