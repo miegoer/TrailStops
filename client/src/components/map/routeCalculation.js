@@ -1,5 +1,4 @@
-import { marker } from "leaflet";
-
+// load GPX track as an array of points
 async function loadGPXTrackPoints(url) {
   try {
     const response = await fetch(url);
@@ -109,6 +108,11 @@ async function routeCalculation (markerArr) {
   for (let i = 0; i < markerArrCopy.length; i++) {
     markerArrCopy[i].prevDist.time = walkingTimeCalc(markerArrCopy[i].prevDist.dist);
     markerArrCopy[i].nextDist.time = walkingTimeCalc(markerArrCopy[i].nextDist.dist);
+  }
+
+  //save marker route order in marker
+  for (let i = 0; i < markerArrCopy.length; i++) {
+    markerArrCopy[i].order = i +1;
   }
 
   // change markers back to object

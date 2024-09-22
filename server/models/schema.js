@@ -23,7 +23,8 @@ const UserMarkersSchema = new mongoose.Schema({
   nextDist: {
     dist: { type: Number, required: true },
     time: { type: Number, required: true }
-  }
+  },
+  order: { type: Number },
 });
 
 const User = mongoose.model('User', userSchema);

@@ -44,11 +44,11 @@ function SearchResultScreen() {
 
   return (
     <div className='searchResultScreen'>
-        <h1>Search Result Screen</h1>
+        <h1>Search Result</h1>
         <h2>Previous Stop: {marker.prevDist?.dist ? `${marker.prevDist.dist} km` : 'N/A'}</h2>
-        <h3>Previous walking time: {marker.prevDist?.time ? `${marker.prevDist.time} hours` : 'N/A'}</h3>
+        <h3>Time from previous stop: {marker.prevDist?.time ? `${marker.prevDist.time} hours` : 'N/A'}</h3>
         <h2>Next Stop: {marker.nextDist?.dist ? `${marker.nextDist.dist} km` : 'N/A'}</h2>
-        <h3>Next walking time: {marker.nextDist?.time ? `${marker.nextDist.time} hours` : 'N/A'}</h3>
+        <h3>Time to next stop: {marker.nextDist?.time ? `${marker.nextDist.time} hours` : 'N/A'}</h3>
       {marker.position ? (
         <div>
         <ul>
@@ -64,7 +64,7 @@ function SearchResultScreen() {
             <p>No accommodation found.</p>
           )}
         </ul>
-        <p>Wild Camping</p>
+        <p className='wildOption'>Wild Camping</p>
         <button onClick={() => updateAccommodation("Wild Camping")}>Select</button>
         </div>
       ) : (

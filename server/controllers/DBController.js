@@ -14,11 +14,10 @@ exports.getMarkers = async (req, res) => {
 exports.addMarker = async (req, res) => {
   try {
     const { _id, user_id, marker, updatedMarkers } = req.body;
-    const newMarker = new UserMarkers({user_id: user_id, position: marker.position, hotel: marker.hotel, _id:_id, nextDist: marker.nextDist, prevDist: marker.prevDist}); 
+    const newMarker = new UserMarkers({user_id: user_id, position: marker.position, hotel: marker.hotel, _id:_id, nextDist: marker.nextDist, prevDist: marker.prevDist, order: marker.order}); 
     let response = await newMarker.save();
     for (const key in updatedMarkers) {
-      console.log(key);
-      response = await UserMarkers.findOneAndUpdate({_id: key}, {prevDist: updatedMarkers[key].prevDist, nextDist: updatedMarkers[key].nextDist});
+      response = await UserMarkers.findOneAndUpdate({_id: key}, {prevDist: updatedMarkers[key].prevDist, nextDist: updatedMarkers[key].nextDist, order: updatedMarkers[key.order]});
     }
     res.status(200).json(response);
   } catch (error) {

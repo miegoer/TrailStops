@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import DBService from '../../services/DBService';
 import { v4 as uuidv4 } from 'uuid';
 import routeCalculation from './routeCalculation';
+import './map.css';
+
 
 const defaultIcon = L.icon({
   iconUrl: '/map-pin.svg',
@@ -35,7 +37,6 @@ const MapComponent = () => {
           acc[curr._id] = curr;
           return acc;
         }, {})
-        console.log(dataOut);
         setMarkers(dataOut);
         }
       });
@@ -80,7 +81,12 @@ const MapComponent = () => {
     }
   };
 
+  const TripDetailsClickHandler = () => {
+    navigate('/details', { state: { markers: markers} })
+  }
+
   return (
+    <>
     <MapContainer zoom={13} style={{ height: '100vh', width: '100%' }} zoomControl={false} >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -91,6 +97,8 @@ const MapComponent = () => {
       ))}
       <MapClickHandler />
     </MapContainer>
+    <button className='tripDetails' onClick={TripDetailsClickHandler}>Trip Details</button>
+    </>
   );
 };
 

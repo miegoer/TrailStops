@@ -1,3 +1,15 @@
 .leaflet-control-container .leaflet-routing-container-hide {
   display: none;
 }
+
+.tripDetails {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  z-index: 5000;
+}
