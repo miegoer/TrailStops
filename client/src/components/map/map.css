@@ -6,7 +6,9 @@
   position: absolute;
   bottom: 20px;
   left: 20px;
-  background: white;
+  color: white;
+  background: #28a745;
+  border-color: #28a745;
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
@@ -19,8 +21,10 @@
   top: 5px;
   left: 5px;
   max-height: 15%;
-  max-width: 15%;
+  max-width: 9%;
   z-index: 5000;
+  width: auto
+;
 }
 
 .settings {
@@ -28,7 +32,7 @@
   top: 10px;
   right: 10px;
   max-height: 8%;
-  max-width: 8%;
+  max-width: auto;
   z-index: 5000;
   cursor: pointer;
 }

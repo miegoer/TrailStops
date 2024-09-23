@@ -4,6 +4,7 @@ import SearchResultScreen from './components/searchResultScreen/searchResultScre
 import LoginScreen from './components/loginScreen/loginScreen';
 import RegisterScreen from './components/registerScreen/registerScreen';
 import TripDetailsScreen from './components/tripDetailsScreen/tripDetailsScreen';
+import Settings from './components/settings/settings';
 import { createBrowserRouter,RouterProvider, } from "react-router-dom";
 
 function App() {
@@ -28,6 +29,10 @@ function App() {
     {
       path: '/details',
       element: <TripDetailsScreen />
+    },
+    {
+      path: '/settings',
+      element: <Settings />
     }
   ]);
 

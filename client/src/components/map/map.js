@@ -75,7 +75,6 @@ const MapComponent = () => {
 
   const MarkerClickHandler = (marker) => {
     if (marker) {
-      console.log("Marker clicked:", marker);
       navigate('/search', { state: { marker: marker } });
     } else {
       console.error("Marker not found in state");
@@ -100,7 +99,7 @@ const MapComponent = () => {
     </MapContainer>
     <button className='tripDetails' onClick={TripDetailsClickHandler}>Trip Details</button>
     <img className='backpack' src='backpack.png' alt='backpack'/>
-    <img className='settings' src='settings.webp' alt='settings'/>
+    <img className='settings' src='settings.webp' alt='settings' onClick={() => navigate('/settings')}/>
     </>
   );
 };

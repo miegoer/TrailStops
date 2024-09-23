@@ -1,6 +1,6 @@
 import './searchResultScreen.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { extractAccomodations } from '../../services/googleAPIService';
+import APIService from '../../services/googleAPIService';
 import { useState, useEffect } from 'react';
 import DBService from '../../services/DBService';
 
@@ -15,13 +15,14 @@ function SearchResultScreen() {
   useEffect(() => {
     if (marker.position) {
       const [lon, lat] = [marker.position.lat, marker.position.lng];
-      extractAccomodations(lon, lat)
+      APIService.extractAccomodations(lon, lat)
         .then((data) => {
+          console.log(data);
           setNearAccommodation(Array.isArray(data) ? data : []);
         })
       }
        if (marker._id) {
-        DBService.getAccommodation("aidan@test.com", marker._id) //WORK FROM HERE ADD THE MarkerId
+        DBService.getAccommodation("aidan@test.com", marker._id)
         .then((hotel) => {
           if (hotel) {
             setSelectedAccommodation(hotel.hotel);
@@ -55,8 +56,9 @@ function SearchResultScreen() {
           {nearAccommodation && nearAccommodation.length > 0 ? (
             nearAccommodation.map((accommodation, index) => (
               <div key={index}>
-              <li key={index}>{accommodation}</li>
-              <button onClick={() => updateAccommodation(accommodation)}>Select</button>
+              <li key={index}>{accommodation.name}</li>
+              <img src={accommodation.url.data} alt={accommodation.name} />
+              <button onClick={() => updateAccommodation(accommodation.name)}>Select</button>
               </div>
             ))
               

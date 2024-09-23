@@ -83,6 +83,7 @@ async function routeCalculation (markerArr) {
 
   // calculate full distances between markers
   for (let i = 0; i < markerArrCopy.length; i++) {
+    console.log("Marker position:", markerArrCopy[i].position);
     if (markerArrCopy.length === 1) {
       markerArrCopy[i].prevDist.dist = fullDistanceCalc(markerArrCopy[i].prevDist.dist, routeArr, 0, markerArrCopy[i].prevIndex);
       markerArrCopy[i].nextDist.dist = fullDistanceCalc(markerArrCopy[i].nextDist.dist, routeArr, markerArrCopy[i].nextIndex, routeArr.length-1);

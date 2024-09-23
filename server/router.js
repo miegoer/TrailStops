@@ -35,5 +35,9 @@ router.get('/getAccomodation', (req, res) => {
   Accomodation.getAccomodation(req, res);
 });
 
+router.get('/accommodationPic', (req, res) => {
+  Accomodation.getAccommodationPic(req, res);
+});
+
 
 module.exports = router;
