@@ -1,13 +1,10 @@
 import './searchResultScreen.css';
-import { useLocation } from 'react-router-dom';
 import APIService from '../../services/googleAPIService';
 import { useState, useEffect } from 'react';
 import DBService from '../../services/DBService';
 import { Button } from '@mui/material';
 
-function SearchResultScreen() {
-  const location = useLocation();
-  const { marker } = location.state || {};
+function SearchResultScreen({ marker, closeOverlay }) {
   const [nearAccommodation, setNearAccommodation] = useState([]);
   const [selectedAccommodation, setSelectedAccommodation] = useState("")
 
@@ -39,7 +36,7 @@ function SearchResultScreen() {
 
   const deleteMarker = (markerId) => {
     DBService.removeMarker("aidan@test.com", markerId);
-    window.history.back();
+    closeOverlay();
   };
 
   return (
@@ -75,7 +72,7 @@ function SearchResultScreen() {
         <p>Selected accommodation: 
         {selectedAccommodation === "" ? " no accommodation selected" : ` ${selectedAccommodation}`}
       </p>
-      <Button variant='contained' style={{marginRight: "10px"}} onClick={() => window.history.back()}>Back</Button>
+      <Button variant='contained' style={{marginRight: "10px"}} onClick={() => closeOverlay()}>Back</Button>
       <Button variant='contained' onClick={() => deleteMarker(marker._id)}>Delete Marker</Button>
       </div>
     </div>

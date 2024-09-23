@@ -3,9 +3,8 @@ import { createBrowserRouter,RouterProvider, } from "react-router-dom";
 import ErrorPage from './components/errorScreen/errorScreen';
 import LoginScreen from './components/loginScreen/loginScreen';
 import RegisterScreen from './components/registerScreen/registerScreen';
-import SearchResultScreen from './components/searchResultScreen/searchResultScreen';
 import Settings from './components/settings/settings';
-import TripDetailsScreen from './components/tripDetailsScreen/tripDetailsScreen';
+import './App.css';
 
 // main app component, handles routing
 function App() {
@@ -23,16 +22,6 @@ function App() {
     {
       path: "/map",
       element: <Map />,
-    },
-    {
-      path: "/search",
-      element: <SearchResultScreen />,
-      errorElement: <ErrorPage />,
-    },
-    {
-      path: '/details',
-      element: <TripDetailsScreen />,
-      errorElement: <ErrorPage />,
     },
     {
       path: '/settings',

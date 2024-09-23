@@ -4,8 +4,8 @@
 
 .tripDetails {
   position: absolute;
-  bottom: 55px;
-  left: 75px;
+  bottom: 20px;
+  left: 100px;
   padding: 10px;
   z-index: 5000;
 }

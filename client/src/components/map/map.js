@@ -1,4 +1,3 @@
-
 import './map.css';
 import { useEffect, useState } from 'react';
 import { Marker, MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
@@ -12,6 +11,8 @@ import { v4 as uuidv4 } from 'uuid';
 import 'leaflet-gpx';
 import 'leaflet/dist/leaflet.css';
 import { Button } from '@mui/material';
+import SearchResultScreen from '../searchResultScreen/searchResultScreen';
+import TripDetailsScreen from '../tripDetailsScreen/tripDetailsScreen';
 
 // set icon for placed markers
 const defaultIcon = L.icon({
@@ -26,6 +27,8 @@ const MapComponent = () => {
   const gpxFile = '/WHW.gpx';
   const [markers, setMarkers] = useState({});
   const [gpxRoute, setGpxRoute] = useState([]);
+  const [selectedMarker, setSelectedMarker] = useState(null);
+  const [detailsClicked, setDetailsClicked] = useState(false);
   const navigate = useNavigate();
 
   const setGpxRouteFunc = (route) => {
@@ -66,7 +69,7 @@ const MapComponent = () => {
           DBService.addMarker("aidan@test.com", calculatedMarkers[newMarker._id], calculatedMarkers);
           // timeout to make sure point is added to state.
           setTimeout(() => {
-            navigate('/search', {state: { marker:calculatedMarkers[newMarker._id] }});
+            setSelectedMarker(calculatedMarkers[newMarker._id]);
           }, 100)
         }
       },
@@ -77,7 +80,7 @@ const MapComponent = () => {
   // handler for placed marker being clicked
   const MarkerClickHandler = (marker) => {
     if (marker) {
-      navigate('/search', { state: { marker: marker } });
+      setSelectedMarker(marker);
     } else {
       console.error("Marker not found in state");
     }
@@ -85,12 +88,21 @@ const MapComponent = () => {
 
   // handler from tripDetails button being clicked
   const TripDetailsClickHandler = () => {
-    navigate('/details', { state: { markers: markers} })
+    setDetailsClicked(true);
   }
+
+  const closeSearchOverlay = () => {
+    setSelectedMarker(null); // Hide the overlay
+  };
+
+  const closeDetailsOverlay = () => {
+    setDetailsClicked(false); // Hide the overlay
+  };
 
   return (
     <>
-    <MapContainer minZoom={9} style={{ height: '100vh', width: '100%' }} zoomControl={false} >
+    <div className='mapContainer'>
+    <MapContainer minZoom={9} style={{ height: '100vh', width: '100%' }} zoomControl={false} scrollWheelZoom={!selectedMarker} dragging={!selectedMarker} touchZoom={!selectedMarker}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
@@ -100,9 +112,24 @@ const MapComponent = () => {
       ))}
       <MapClickHandler />
     </MapContainer>
-    <Button variant='contained' className='tripDetails' onClick={TripDetailsClickHandler}>Trip Details</Button>
     <img className='backpackMapImg' src='backpack.png' alt='brown backpack open at the front showing a wilderness scene inside'/>
-    <img className='settings' src='settings.webp' alt='line render of a settings cog icon' onClick={() => navigate('/settings')}/>
+    {!selectedMarker && (
+          <>
+            <Button variant='contained' className='tripDetails' onClick={TripDetailsClickHandler}>Trip Details</Button>
+            <img className='settings' src='settings.webp' alt='line render of a settings cog icon' onClick={() => navigate('/settings')} />
+          </>
+        )}
+    </div>
+    {selectedMarker && (
+        <div className="overlay1" style={{ position: 'absolute', zIndex: 1000, top: 0, left: 0, width: '100%', height: '100%' }}>
+        <SearchResultScreen marker={selectedMarker} closeOverlay={closeSearchOverlay} />
+        </div>
+        )}
+    {detailsClicked && (
+        <div className="overlay2" style={{ position: 'absolute', zIndex: 1000, top: 0, left: 0, width: '100%', height: '100%' }}>
+        <TripDetailsScreen closeOverlay={closeDetailsOverlay} markers={markers} setSelectedMarker={setSelectedMarker}/>
+        </div>
+        )}
     </>
   );
 };

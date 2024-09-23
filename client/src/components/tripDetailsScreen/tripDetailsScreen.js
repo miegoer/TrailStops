@@ -1,12 +1,8 @@
 import './tripDetailsScreen.css';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Button } from '@mui/material';
 
-function TripDetailsScreen() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { markers } = location.state || {};
+function TripDetailsScreen({ closeOverlay, markers, setSelectedMarker }) {
   
   useEffect(() => {
     console.log(markers);
@@ -35,11 +31,14 @@ function TripDetailsScreen() {
             <br />
             Time to next stop: {marker.nextDist?.time} hrs
             <br />
-            <Button variant='contained' onClick={() => navigate('/search', { state: { marker } })}>Edit</Button>
+            <Button variant='contained' onClick={() => {
+              setSelectedMarker(marker);
+              closeOverlay();
+        }}>Edit</Button>
           </li>
         ))}
       </ul>
-      <Button variant='contained' className='backButton' onClick={() => navigate('/map')}>Back</Button>
+      <Button variant='contained' className='backButton' onClick={() => closeOverlay()}>Back</Button>
     </div>
   );
 }

@@ -32,7 +32,7 @@ const GPXLayer = ({ gpxFile, passRoute}) => {
       map.removeLayer(gpx);
       map.attributionControl.setPrefix(''); // removes 'leaflet' corner link
     };
-  }, [map, gpxFile]);
+  }, []);
 
   return null;
 };
