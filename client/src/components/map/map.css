@@ -4,8 +4,8 @@
 
 .tripDetails {
   position: absolute;
-  bottom: 20px;
-  left: 20px;
+  bottom: 19px;
+  left: 75px;
   color: white;
   background: #28a745;
   border-color: #28a745;
@@ -29,8 +29,8 @@
 
 .settings {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  bottom: 15px;
+  left: 15px;
   max-height: 8%;
   max-width: auto;
   z-index: 5000;

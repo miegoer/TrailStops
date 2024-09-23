@@ -31,6 +31,7 @@ const GPXLayer = ({ gpxFile, passRoute}) => {
 
     return () => {
       map.removeLayer(gpx);
+      map.attributionControl.setPrefix('');
     };
   }, [map, gpxFile]);
 
