@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Accomodation = require('./controllers/apiController');
+const Accommodation = require('./controllers/apiController');
 const DB = require('./controllers/DBController')
 
 router.get('/mapMarkers', (req, res) => {
@@ -31,12 +31,16 @@ router.put('/accommodation', (req, res) => {
   DB.addAccommodation(req, res);
 })
 
-router.get('/getAccomodation', (req, res) => {
-  Accomodation.getAccomodation(req, res);
+router.get('/getAccommodation', (req, res) => {
+  Accommodation.getAccommodation(req, res);
 });
 
 router.get('/accommodationPic', (req, res) => {
-  Accomodation.getAccommodationPic(req, res);
+  Accommodation.getAccommodationPic(req, res);
+});
+
+router.get('/getAccommodationDetails', (req, res) => {
+  Accommodation.getAccommodationDetails(req, res);
 });
 
 

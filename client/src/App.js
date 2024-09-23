@@ -1,22 +1,24 @@
-import './App.css';
 import Map from './components/map/map';
-import SearchResultScreen from './components/searchResultScreen/searchResultScreen';
+import { createBrowserRouter,RouterProvider, } from "react-router-dom";
+import ErrorPage from './components/errorScreen/errorScreen';
 import LoginScreen from './components/loginScreen/loginScreen';
 import RegisterScreen from './components/registerScreen/registerScreen';
-import TripDetailsScreen from './components/tripDetailsScreen/tripDetailsScreen';
+import SearchResultScreen from './components/searchResultScreen/searchResultScreen';
 import Settings from './components/settings/settings';
-import { createBrowserRouter,RouterProvider, } from "react-router-dom";
+import TripDetailsScreen from './components/tripDetailsScreen/tripDetailsScreen';
 
+// main app component, handles routing
 function App() {
-
   const router = createBrowserRouter([
     {
       path: "/",
       element: <LoginScreen />,
+      errorElement: <ErrorPage />,
     },
     {
       path: "/register",
       element: <RegisterScreen />,
+      errorElement: <ErrorPage />,
     },
     {
       path: "/map",
@@ -25,15 +27,19 @@ function App() {
     {
       path: "/search",
       element: <SearchResultScreen />,
+      errorElement: <ErrorPage />,
     },
     {
       path: '/details',
-      element: <TripDetailsScreen />
+      element: <TripDetailsScreen />,
+      errorElement: <ErrorPage />,
     },
     {
       path: '/settings',
-      element: <Settings />
-    }
+      element: <Settings />,
+      errorElement: <ErrorPage />,
+    },
+    
   ]);
 
   return (

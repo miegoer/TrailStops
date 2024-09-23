@@ -5,13 +5,13 @@ import 'leaflet-gpx';
 import 'leaflet/dist/leaflet.css';
 import './gpxMapLayer.css'
 
-
+// function to generate the route line on the map
 const GPXLayer = ({ gpxFile, passRoute}) => {
   const map = useMap();
 
   useEffect(() => {
     if (!map) return;
-
+    // line settings for rendering
     const gpx = new L.GPX(gpxFile, {
       async: true,
       polyline_options: {
@@ -21,7 +21,6 @@ const GPXLayer = ({ gpxFile, passRoute}) => {
     });
 
     gpx.addTo(map);
-
     gpx.on('loaded', () => {
       const route = gpx.getLayers();
       passRoute(route);
@@ -31,13 +30,11 @@ const GPXLayer = ({ gpxFile, passRoute}) => {
 
     return () => {
       map.removeLayer(gpx);
-      map.attributionControl.setPrefix('');
+      map.attributionControl.setPrefix(''); // removes 'leaflet' corner link
     };
   }, [map, gpxFile]);
 
-
   return null;
 };
-
 
 export default GPXLayer;

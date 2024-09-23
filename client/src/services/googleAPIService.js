@@ -1,6 +1,6 @@
  async function getNearAccommodations(lat, lng) {
   try {
-    const response = await fetch(`http://localhost:3001/getAccomodation?lat=${lat}&lon=${lng}`);
+    const response = await fetch(`http://localhost:3001/getAccommodation?lat=${lat}&lon=${lng}`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -13,8 +13,9 @@
   }
 }
 
-async function extractAccomodations (lat, lng) {
+async function extractAccommodations (lat, lng) {
   const data = await getNearAccommodations(lat, lng);
+  console.log(data);
   const { results } = data;
   if (results.length <= 0) {
     return null;
@@ -39,5 +40,5 @@ async function fetchAccommodationPicture(photoReference) {
   return await response.json();
 }
 
-const APIService = { extractAccomodations }
+const APIService = { extractAccommodations }
 export default APIService

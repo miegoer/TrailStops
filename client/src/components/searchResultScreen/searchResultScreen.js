@@ -1,12 +1,12 @@
 import './searchResultScreen.css';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import APIService from '../../services/googleAPIService';
 import { useState, useEffect } from 'react';
 import DBService from '../../services/DBService';
+import { Button } from '@mui/material';
 
 function SearchResultScreen() {
   const location = useLocation();
-  const navigate = useNavigate();
   const { marker } = location.state || {};
   const [nearAccommodation, setNearAccommodation] = useState([]);
   const [selectedAccommodation, setSelectedAccommodation] = useState("")
@@ -15,9 +15,8 @@ function SearchResultScreen() {
   useEffect(() => {
     if (marker.position) {
       const [lon, lat] = [marker.position.lat, marker.position.lng];
-      APIService.extractAccomodations(lon, lat)
+      APIService.extractAccommodations(lon, lat)
         .then((data) => {
-          console.log(data);
           setNearAccommodation(Array.isArray(data) ? data : []);
         })
       }
@@ -40,25 +39,20 @@ function SearchResultScreen() {
 
   const deleteMarker = (markerId) => {
     DBService.removeMarker("aidan@test.com", markerId);
-    navigate('/map')
+    window.history.back();
   };
 
   return (
     <div className='searchResultScreen'>
-        <h1>stop {marker.order}</h1>
-        <h2>Previous Stop: {marker.prevDist?.dist ? `${marker.prevDist.dist} km` : 'N/A'}</h2>
-        <h3>Time from previous stop: {marker.prevDist?.time ? `${marker.prevDist.time} hours` : 'N/A'}</h3>
-        <h2>Next Stop: {marker.nextDist?.dist ? `${marker.nextDist.dist} km` : 'N/A'}</h2>
-        <h3>Time to next stop: {marker.nextDist?.time ? `${marker.nextDist.time} hours` : 'N/A'}</h3>
       {marker.position ? (
-        <div>
-        <ul>
+        <div className='accommodationOptions'>
+        <ul className='accommodationList'>
           {nearAccommodation && nearAccommodation.length > 0 ? (
             nearAccommodation.map((accommodation, index) => (
               <div key={index}>
               <li key={index}>{accommodation.name}</li>
               <img src={accommodation.url.data} alt={accommodation.name} />
-              <button onClick={() => updateAccommodation(accommodation.name)}>Select</button>
+              <Button variant='contained' onClick={() => updateAccommodation(accommodation.name)}>Select</Button>
               </div>
             ))
               
@@ -67,16 +61,23 @@ function SearchResultScreen() {
           )}
         </ul>
         <p className='wildOption'>Wild Camping</p>
-        <button onClick={() => updateAccommodation("Wild Camping")}>Select</button>
+        <Button variant='contained' onClick={() => updateAccommodation("Wild Camping")}>Select</Button>
         </div>
       ) : (
         <p>No closest point data available.</p>
       )}
-      <p>Selected accommodation: 
+        <div className='markerInfo'>
+        <h1>stop {marker.order}</h1>
+        <h2>Previous Stop: {marker.prevDist?.dist ? `${marker.prevDist.dist} km` : 'N/A'}</h2>
+        <h3>Time from previous stop: {marker.prevDist?.time ? `${marker.prevDist.time} hours` : 'N/A'}</h3>
+        <h2>Next Stop: {marker.nextDist?.dist ? `${marker.nextDist.dist} km` : 'N/A'}</h2>
+        <h3>Time to next stop: {marker.nextDist?.time ? `${marker.nextDist.time} hours` : 'N/A'}</h3>
+        <p>Selected accommodation: 
         {selectedAccommodation === "" ? " no accommodation selected" : ` ${selectedAccommodation}`}
       </p>
-      <button onClick={() => window.history.back()}>Back</button>
-      <button onClick={() => deleteMarker(marker._id)}>Delete Marker</button>
+      <Button variant='contained' style={{marginRight: "10px"}} onClick={() => window.history.back()}>Back</Button>
+      <Button variant='contained' onClick={() => deleteMarker(marker._id)}>Delete Marker</Button>
+      </div>
     </div>
   )
 }

@@ -20,13 +20,7 @@
   margin-bottom: 20px;
 }
 
-#register {
-  margin: 0px;
-  font-size: 20px;
-  text-align: center;
-}
-
-.backpack {
+.backpackRegisterImg {
   width: 20%;
   height: auto;
 }

@@ -1,6 +1,7 @@
 import './tripDetailsScreen.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { Button } from '@mui/material';
 
 function TripDetailsScreen() {
   const location = useLocation();
@@ -21,24 +22,24 @@ function TripDetailsScreen() {
       <ul className="tripDetailsList">
         <li>Start point
           <br />
-          distance to next stop: {firstMarker.prevDist?.dist} km
+          Distance to next stop: {firstMarker.prevDist?.dist} km
           <br />
-          time to next stop: {firstMarker.prevDist?.time} hrs
+          Time to next stop: {firstMarker.prevDist?.time} hrs
         </li>
 
         {sortedMarkers.map((marker) => (
           <li key={marker._id}>
-            stop {marker.order}: {marker.hotel === "" ? "No Accomodation Selected" : marker.hotel}
+            Stop {marker.order}: {marker.hotel === "" ? "No Accomodation Selected" : marker.hotel}
             <br />
-            distance to next stop: {marker.nextDist?.dist} km
+            Distance to next stop: {marker.nextDist?.dist} km
             <br />
-            time to next stop: {marker.nextDist?.time} hrs
+            Time to next stop: {marker.nextDist?.time} hrs
             <br />
-            <button onClick={() => navigate('/search', { state: { marker } })}>Edit</button>
+            <Button variant='contained' onClick={() => navigate('/search', { state: { marker } })}>Edit</Button>
           </li>
         ))}
       </ul>
-      <button className='backButton' onClick={() => navigate('/map')}>Back</button>
+      <Button variant='contained' className='backButton' onClick={() => navigate('/map')}>Back</Button>
     </div>
   );
 }

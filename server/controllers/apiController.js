@@ -1,6 +1,6 @@
 require('dotenv').config({path: '.env'});
 
-exports.getAccomodation = async (req, res) => {
+exports.getAccommodation = async (req, res) => {
   try {
     const { lon, lat } = req.query;
     const apiKey = process.env.GOOGLE_API_KEY;
@@ -20,19 +20,26 @@ exports.getAccommodationPic = async (req, res) => {
     const imageUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photo_reference}&key=${apiKey}`;
     
     const response = await fetch(imageUrl);
-    console.log(response);
-  // const contentType = response.headers.get('content-type');
-  // console.log('content type: ', contentType);
-  // res.set('Content-Type', contentType);
-  // res.send(response.data);
     if (response.ok) {
-      // data = await response.text();
-      res.status(200).json({data: response.url}); // Send the image buffer
+      res.status(200).json({data: response.url}); 
     } else {
       const errorMessage = await response.text();
       console.log("Error fetching image:", errorMessage);
       res.status(404).send("Image not found");
     }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server Error");
+  }
+}
+
+exports.getAccomodationDetails = async (req, res) => {
+  try {
+    const { place_id } = req.query;
+    const apiKey = process.env.GOOGLE_API_KEY;
+    const response = await fetch(`https://maps.googleapis.com/maps/api/place/details/json?key=${apiKey}&place_id=${place_id}`);
+    const data = await response.json();
+    res.status(200).json(data)
   } catch (error) {
     console.log(error);
     res.status(500).send("Server Error");

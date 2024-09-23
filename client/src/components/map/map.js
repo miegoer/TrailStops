@@ -1,17 +1,19 @@
-import { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, useMapEvents, Marker } from 'react-leaflet';
-import 'leaflet-gpx';
-import 'leaflet/dist/leaflet.css';
+
+import './map.css';
+import { useEffect, useState } from 'react';
+import { Marker, MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import GPXLayer from '../gpxMapLayer/gpxMapLayer';
-import closestPoints from './closestPoint';
+import closestPoints from '../../helperFunctions/closestPoint';
+import routeCalculation from '../../helperFunctions/routeCalculation';
 import { useNavigate } from 'react-router-dom';
 import DBService from '../../services/DBService';
 import { v4 as uuidv4 } from 'uuid';
-import routeCalculation from './routeCalculation';
-import './map.css';
+import 'leaflet-gpx';
+import 'leaflet/dist/leaflet.css';
+import { Button } from '@mui/material';
 
-
+// set icon for placed markers
 const defaultIcon = L.icon({
   iconUrl: '/map-pin.svg',
   iconSize: [25, 41],
@@ -42,12 +44,13 @@ const MapComponent = () => {
       });
   }, []);
 
+  // handler from marker being added to map
   const MapClickHandler = () => {
     useMapEvents({
       click: async (e) => { 
-        const { lat, lng } = e.latlng;
+        const { lat, lng } = e.latlng;  // get position of click
         if (gpxRoute) {
-          const closestPoint = closestPoints([lat, lng]);
+          const closestPoint = closestPoints([lat, lng]); // snap clicked position to route
           const newMarker = {
             _id: uuidv4(),
             user_id: 'aidan@test.com',
@@ -56,14 +59,12 @@ const MapComponent = () => {
             prevDist: { dist: 0, time: 0 },
             nextDist: { dist: 0, time: 0 },
           };
-
+          // update markers state and add maker to database
           let updatedMarkers = {...markers, [newMarker._id]:newMarker};
-
-          setMarkers(updatedMarkers);
-
           const calculatedMarkers = await routeCalculation(Object.values(updatedMarkers));
           setMarkers(calculatedMarkers);
           DBService.addMarker("aidan@test.com", calculatedMarkers[newMarker._id], calculatedMarkers);
+          // timeout to make sure point is added to state.
           setTimeout(() => {
             navigate('/search', {state: { marker:calculatedMarkers[newMarker._id] }});
           }, 100)
@@ -73,6 +74,7 @@ const MapComponent = () => {
     return null;
   };
 
+  // handler for placed marker being clicked
   const MarkerClickHandler = (marker) => {
     if (marker) {
       navigate('/search', { state: { marker: marker } });
@@ -81,6 +83,7 @@ const MapComponent = () => {
     }
   };
 
+  // handler from tripDetails button being clicked
   const TripDetailsClickHandler = () => {
     navigate('/details', { state: { markers: markers} })
   }
@@ -97,9 +100,9 @@ const MapComponent = () => {
       ))}
       <MapClickHandler />
     </MapContainer>
-    <button className='tripDetails' onClick={TripDetailsClickHandler}>Trip Details</button>
-    <img className='backpack' src='backpack.png' alt='backpack'/>
-    <img className='settings' src='settings.webp' alt='settings' onClick={() => navigate('/settings')}/>
+    <Button variant='contained' className='tripDetails' onClick={TripDetailsClickHandler}>Trip Details</Button>
+    <img className='backpackMapImg' src='backpack.png' alt='brown backpack open at the front showing a wilderness scene inside'/>
+    <img className='settings' src='settings.webp' alt='line render of a settings cog icon' onClick={() => navigate('/settings')}/>
     </>
   );
 };

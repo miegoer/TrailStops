@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import DBService from '../../services/DBService';
 import { useNavigate } from 'react-router-dom';
-import { FormControl, TextField, Button, Alert } from '@mui/material';
-
+import { Alert, Button, FormControl, TextField } from '@mui/material';
 import './loginScreen.css';
 
 function LoginScreen() {
@@ -12,6 +11,7 @@ function LoginScreen() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // function to handle form submission
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -49,7 +49,7 @@ function LoginScreen() {
   return (
     <div className="loginScreen">
       <div className="loginFormBox">
-      <img className='backpackLogin' src='backpack.png' alt='backpack'/>
+      <img className='backpackLoginImg' src='backpack.png' alt='brown backpack open at the front showing a wilderness scene inside'/>
       <h1>TrailStops</h1>
       <FormControl className='loginForm' onSubmit={handleSubmit}>
         <TextField
