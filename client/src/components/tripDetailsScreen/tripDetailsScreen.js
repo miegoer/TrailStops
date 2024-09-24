@@ -3,9 +3,7 @@ import { useEffect } from 'react';
 import { Button } from '@mui/material';
 
 function TripDetailsScreen({ closeOverlay, markers = {}, setSelectedMarker }) {
-  
-  useEffect(() => {
-  }, []);
+
 
   const firstMarker = Object.values(markers).find(marker => marker.order === 1) || {
     prevDist: { dist: 0, time: 0 }
@@ -26,7 +24,7 @@ function TripDetailsScreen({ closeOverlay, markers = {}, setSelectedMarker }) {
         </li>
 
         {sortedMarkers.map((marker) => (
-          <li key={marker._id}>
+          <li className='Item' key={marker._id}>
             Stop {marker.order ?? "Unknown"}: {marker.hotel || "No Accommodation Selected"}
             <br />
             Distance to next stop: {marker.nextDist?.dist ?? 0} km

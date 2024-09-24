@@ -32,6 +32,8 @@ function SearchResultScreen({ marker, closeOverlay, markers, setMarkers }) {
 
   function updateAccommodation (accommodation) {
     setSelectedAccommodation(accommodation)
+    const updatedMarkers = { ...markers, [marker._id]:{...marker, hotel:accommodation}};
+    setMarkers(updatedMarkers);
     DBService.addAccommodation("aidan@test.com", accommodation, marker._id)
   }
 
@@ -39,9 +41,11 @@ function SearchResultScreen({ marker, closeOverlay, markers, setMarkers }) {
     DBService.removeMarker("aidan@test.com", markerId);
     const updatedMarkers = { ...markers };
     delete updatedMarkers[markerId];
-    const calculatedMarkers = await routeCalculation(Object.values(updatedMarkers));
-    setMarkers(calculatedMarkers);
-    closeOverlay();
+    const calculatedMarkers = await routeCalculation(Object.values(updatedMarkers))
+    .then((calculatedMarkers) => {
+      setMarkers(calculatedMarkers);
+      closeOverlay();
+    });
   };
 
   return (
@@ -52,9 +56,12 @@ function SearchResultScreen({ marker, closeOverlay, markers, setMarkers }) {
           {nearAccommodation && nearAccommodation.length > 0 ? (
             nearAccommodation.map((accommodation, index) => (
               <div key={index}>
-              <li key={index}>{accommodation.name}</li>
-              <img src={accommodation.url.data} alt={accommodation.name} />
-              <Button variant='contained' onClick={() => updateAccommodation(accommodation.name)}>Select</Button>
+              <li key={index}>{accommodation.name}
+                <br />
+                {accommodation.vicinity}
+              </li>
+              <img className='accommodationImage' src={accommodation.url.data} alt={accommodation.name} />
+              <Button variant='contained' onClick={() => updateAccommodation(accommodation.name + " - " + accommodation.vicinity)}>Select</Button>
               </div>
             ))
               

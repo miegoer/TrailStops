@@ -42,12 +42,12 @@ function Settings({ closeOverlay, settingsData, setSettingsData, markers, setMar
             <MenuItem value="5">5Kmph - Lightning</MenuItem>
           </Select>
         </FormControl>
-        <FormControl>
+        {/* <FormControl>
           <Select value={settingsData.distance} onChange={changeDistanceSetting}>
             <MenuItem value="km">Kilometers</MenuItem>
             <MenuItem value="m">Miles</MenuItem>
           </Select>
-        </FormControl>
+        </FormControl> */}
       </form>
       <Button variant='contained' className='backButton' onClick={closeOverlay}>Back</Button>
     </div>

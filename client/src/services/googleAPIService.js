@@ -25,8 +25,8 @@ async function extractAccommodations (lat, lng) {
       continue;
     }
     const url  = await fetchAccommodationPicture(results[i].photos[0].photo_reference);
-    const { name } = results[i]
-    outputArr[i] = { name,url }; 
+    const { name, vicinity } = results[i]
+    outputArr[i] = { name, url, vicinity }; 
   }
   return outputArr;
 }
