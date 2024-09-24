@@ -20,7 +20,8 @@ function RegisterScreen() {
       <img className='backpackRegisterImg' src='backpack.png' alt='brown backpack open at the front showing a wilderness scene inside'/>
       <h1>TrailStops</h1>
       <h2>Register</h2>
-      <FormControl className='registerForm' onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
+      <FormControl className='registerForm'>
         <TextField
           id="name"
           label="Name"
@@ -46,11 +47,12 @@ function RegisterScreen() {
           value={formData.password}
           onChange={(e) => setFormData({...formData, password: e.target.value})}
           margin='normal'
-          co
+          type='password'
           required
         />
         <Button variant="contained" type="submit">Register</Button>
       </FormControl>
+      </form>
       </div>
     </div>
   )

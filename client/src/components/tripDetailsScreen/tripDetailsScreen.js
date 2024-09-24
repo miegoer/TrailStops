@@ -5,7 +5,6 @@ import { Button } from '@mui/material';
 function TripDetailsScreen({ closeOverlay, markers, setSelectedMarker }) {
   
   useEffect(() => {
-    console.log(markers);
   })
 
   const firstMarker = Object.values(markers).find(marker => marker.order === 1) || {};
@@ -15,7 +14,7 @@ function TripDetailsScreen({ closeOverlay, markers, setSelectedMarker }) {
   return (
     <div className="tripDetailsScreen">
       <h1>Trip Details</h1>
-      <ul className="tripDetailsList">
+      <ul className="tripDetailsList" style={{ justifyContent: 'flex-start' }}>
         <li>Start point
           <br />
           Distance to next stop: {firstMarker.prevDist?.dist} km
@@ -37,6 +36,7 @@ function TripDetailsScreen({ closeOverlay, markers, setSelectedMarker }) {
         }}>Edit</Button>
           </li>
         ))}
+        <li>End Point</li>
       </ul>
       <Button variant='contained' className='backButton' onClick={() => closeOverlay()}>Back</Button>
     </div>
