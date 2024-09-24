@@ -124,7 +124,7 @@ const MapComponent = () => {
     </div>
     {selectedMarker && (
         <div className="overlay1" style={{ position: 'absolute', zIndex: 1000, top: 0, left: 0, width: '100%', height: '100%' }}>
-        <SearchResultScreen marker={selectedMarker} closeOverlay={closeSearchOverlay} />
+        <SearchResultScreen marker={selectedMarker} markers={markers} setMarkers={setMarkers} closeOverlay={closeSearchOverlay} />
         </div>
         )}
     {detailsClicked && (

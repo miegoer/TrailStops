@@ -15,7 +15,6 @@
 
 async function extractAccommodations (lat, lng) {
   const data = await getNearAccommodations(lat, lng);
-  console.log(data);
   const { results } = data;
   if (results.length <= 0) {
     return null;

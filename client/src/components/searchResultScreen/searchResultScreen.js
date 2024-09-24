@@ -3,8 +3,9 @@ import APIService from '../../services/googleAPIService';
 import { useState, useEffect } from 'react';
 import DBService from '../../services/DBService';
 import { Button } from '@mui/material';
+import routeCalculation from '../../helperFunctions/routeCalculation';
 
-function SearchResultScreen({ marker, closeOverlay }) {
+function SearchResultScreen({ marker, closeOverlay, markers, setMarkers }) {
   const [nearAccommodation, setNearAccommodation] = useState([]);
   const [selectedAccommodation, setSelectedAccommodation] = useState("")
 
@@ -34,8 +35,13 @@ function SearchResultScreen({ marker, closeOverlay }) {
     DBService.addAccommodation("aidan@test.com", accommodation, marker._id)
   }
 
-  const deleteMarker = (markerId) => {
+  async function deleteMarker (markerId) {
     DBService.removeMarker("aidan@test.com", markerId);
+    const updatedMarkers = { ...markers };
+    delete updatedMarkers[markerId];
+    const calculatedMarkers = await routeCalculation(Object.values(updatedMarkers));
+    console.log(calculatedMarkers)
+    setMarkers(calculatedMarkers);
     closeOverlay();
   };
 
