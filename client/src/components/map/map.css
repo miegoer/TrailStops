@@ -20,6 +20,10 @@
   width: auto;
 }
 
+.mapContainer {
+  height: 100%;
+  overflow: hidden;
+}
 .settings {
   position: absolute;
   bottom: 15px;

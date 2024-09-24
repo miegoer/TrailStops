@@ -11,6 +11,10 @@ router.post('/mapMarkers', (req, res) => {
   DB.addMarker(req, res);
 })
 
+router.put('/updateAllMarkers', (req, res) => {
+  DB.updateAllMarkers(req, res);
+})
+
 router.delete('/mapMarkers', (req, res) => {
   DB.removeMarker(req, res);
 })

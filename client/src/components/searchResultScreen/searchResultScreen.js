@@ -40,7 +40,6 @@ function SearchResultScreen({ marker, closeOverlay, markers, setMarkers }) {
     const updatedMarkers = { ...markers };
     delete updatedMarkers[markerId];
     const calculatedMarkers = await routeCalculation(Object.values(updatedMarkers));
-    console.log(calculatedMarkers)
     setMarkers(calculatedMarkers);
     closeOverlay();
   };

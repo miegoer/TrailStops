@@ -3,7 +3,7 @@ import './detailSummary.css';
 function DetailSummary({ markers }) {
 
   if (!markers || Object.keys(markers).length === 0) {
-    return <div>No markers placed!</div>;
+    return <div style={{zIndex:"-100", position:"absolute", top:"1px"}}>No markers placed!</div>;
   }
 
   const sortedMarkers = Object.values(markers || {}).sort((a, b) => a.order - b.order);
@@ -16,18 +16,19 @@ function DetailSummary({ markers }) {
       <p className='emoji'>&#128315;</p> 
         {sortedMarkers[0].prevDist ? (
           <>
-            <p>{sortedMarkers[0].prevDist.dist} kms/{sortedMarkers[0].prevDist.time} hrs </p>
+            <p style={{ marginBottom: '0px' }}>{sortedMarkers[0].prevDist.dist} kms/{sortedMarkers[0].prevDist.time} hrs </p>
             <p className='emoji'>&#128315;</p>
           </>   
-        ) : "No markers placed!"}
+        ) : "this div"}
       <div className="summary">
         {sortedMarkers && Object.values(sortedMarkers).length > 0 ? (
           Object.values(markers).map((marker) => (
             <div className="marker" key={marker._id}>
               <img className="markerIcon" src='map-pin.svg' alt='marker icon' />
+              <p style={{ marginBottom: '0px' }}>Stop {marker.order}</p>
               <div className="markerInfo">
               <p className='emoji'>&#128315;</p>
-                <p>{marker.nextDist?.dist} kms/{marker.nextDist?.time} hrs</p>
+                <p style={{ marginBottom: '0px' }}>{marker.nextDist?.dist} kms/{marker.nextDist?.time} hrs</p>
                 <p className='emoji'>&#128315;</p>
               </div>
             </div>

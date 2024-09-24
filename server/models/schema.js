@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   name: String,
   email: String,
-  password: String
+  password: String,
 });
 
 const UserMarkersSchema = new mongoose.Schema({
@@ -25,6 +25,8 @@ const UserMarkersSchema = new mongoose.Schema({
     time: { type: Number, required: true }
   },
   order: { type: Number },
+  walkingSpeed: { type: Number, required: true },
+  distanceMeasure: { type: String, required: true },
 });
 
 const User = mongoose.model('User', userSchema);

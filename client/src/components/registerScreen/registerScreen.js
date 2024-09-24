@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import DBService from '../../services/DBService';
 import { useNavigate } from 'react-router-dom';
-import { FormControl, TextField, Button, InputLabel, Select, MenuItem } from '@mui/material';
+import { FormControl, TextField, Button, Select, MenuItem } from '@mui/material';
 import './registerScreen.css';
 
 function RegisterScreen() {

@@ -1,5 +1,5 @@
 // Haversine formula to calculate distance between two coordinates on earth
-export default function haversineDistance(coord1, coord2) {
+export default function haversineDistance(coord1, coord2, distanceMeasure) {
   const R = 6371e3; // Radius of Earth in meters
   const lat1 = coord1.lat * Math.PI / 180;
   const lat2 = coord2.lat * Math.PI / 180;
@@ -12,5 +12,10 @@ export default function haversineDistance(coord1, coord2) {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   const distInMeters = R * c;
-  return distInMeters / 1000; //kilometer conversion
+
+  if (distanceMeasure === "km") {
+    return distInMeters / 1000; //kilometers conversion
+  } else if (distanceMeasure === "m") {
+    return distInMeters / 1609.34 // miles conversion
+  }
 }
