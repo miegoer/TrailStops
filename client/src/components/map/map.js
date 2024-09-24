@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 import 'leaflet-gpx';
 import 'leaflet/dist/leaflet.css';
 import { Button } from '@mui/material';
+import DetailSummary from '../detailSummary/detailSummary';
 import SearchResultScreen from '../searchResultScreen/searchResultScreen';
 import TripDetailsScreen from '../tripDetailsScreen/tripDetailsScreen';
 
@@ -117,6 +118,7 @@ const MapComponent = () => {
           <>
             <Button variant='contained' className='tripDetails' onClick={TripDetailsClickHandler}>Trip Details</Button>
             <img className='settings' src='settings.webp' alt='line render of a settings cog icon' onClick={() => navigate('/settings')} />
+            <DetailSummary markers={markers}/>
           </>
         )}
     </div>

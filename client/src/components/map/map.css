@@ -4,7 +4,7 @@
 
 .tripDetails {
   position: absolute;
-  bottom: 20px;
+  bottom: 50px;
   left: 100px;
   padding: 10px;
   z-index: 5000;

@@ -63,7 +63,7 @@ function SearchResultScreen({ marker, closeOverlay }) {
       ) : (
         <p>No closest point data available.</p>
       )}
-        <div className='markerInfo'>
+        <div>
         <h1>stop {marker.order}</h1>
         <h2>Previous Stop: {marker.prevDist?.dist ? `${marker.prevDist.dist} km` : 'N/A'}</h2>
         <h3>Time from previous stop: {marker.prevDist?.time ? `${marker.prevDist.time} hours` : 'N/A'}</h3>
