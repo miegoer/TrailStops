@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import DBService from '../../services/DBService';
 import { useNavigate } from 'react-router-dom';
-import { FormControl, TextField, Button, } from '@mui/material';
+import { FormControl, TextField, Button, InputLabel, Select, MenuItem } from '@mui/material';
 import './registerScreen.css';
 
 function RegisterScreen() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({name:"",email:"", password:""});
+  const [formData, setFormData] = useState({name:"",email:"", password:"", route:"0"});
   // function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -50,6 +50,19 @@ function RegisterScreen() {
           type='password'
           required
         />
+        <Select
+          value={formData.route}
+          labelId="RouteSelect"
+          id="route"
+          onChange={(e) => setFormData({...formData, route: e.target.value})}
+          style={{ marginBottom: "10px", marginTop: "10px" }}
+        >
+          <MenuItem value="0">Select First Route</MenuItem>
+          <MenuItem value="1">WHW</MenuItem>
+          <MenuItem value="2" disabled sx={{ fontStyle: 'italic' }}>CDT-Unavailable</MenuItem>
+          <MenuItem value="3" disabled sx={{ fontStyle: 'italic' }}>TMB-Unavailable</MenuItem>
+        </Select>
+
         <Button variant="contained" type="submit">Register</Button>
       </FormControl>
       </form>
