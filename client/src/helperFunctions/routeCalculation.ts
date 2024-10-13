@@ -1,20 +1,21 @@
 import createGPXArray from "./createGPXArray";
 import haversineDistanceCalc from "./haversineDistanceCalc";
 import isMarkerBetweenRoutePoints from "./checkMarkerPosition";
+import { MarkerType } from "../types/types";
 
 // loop through all points in route from index1 to index2 to calculate an accurate distance.
-function fullDistanceCalc(markerDist, routeArr, routeIndex1, routeIndex2, distance) {
+function fullDistanceCalc(markerDist: number, routeArr: {lat: number; lng: number; }[], routeIndex1: number, routeIndex2: number, distance: string) {
   for (let i = routeIndex1; i < routeIndex2; i++) {
     markerDist = markerDist + haversineDistanceCalc(routeArr[i], routeArr[i+1], distance);
   }
   return Math.round(markerDist);
 }
 
-function walkingTimeCalc(markerDist, speed) {
+function walkingTimeCalc(markerDist: number, speed: number) {
   return Math.round(markerDist / speed);
 }
 
-async function routeCalculation (markerArr, calculationSettings) {
+async function routeCalculation (markerArr: MarkerType[], calculationSettings: {speed: number; distance: string;}) {
   const routeArr = await createGPXArray("WHW.gpx");
   let markerArrCopy = JSON.parse(JSON.stringify(markerArr));
   // find where the markers fall between in the route
@@ -29,7 +30,7 @@ async function routeCalculation (markerArr, calculationSettings) {
   // TODO implement both ways search
 
   // sort markerArrCopy to to be in order of prevIndex
-  markerArrCopy.sort((a, b) => a.prevIndex - b.prevIndex);
+  markerArrCopy.sort((a: { prevIndex: number; }, b: { prevIndex: number; }) => a.prevIndex - b.prevIndex);
   
   // calculate prev and next distance for each marker to their prev and next route point
   for (let i = 0; i < markerArrCopy.length; i++) {
@@ -72,7 +73,7 @@ async function routeCalculation (markerArr, calculationSettings) {
   }
 
   // change markers back to object
-  const output = markerArrCopy.reduce((acc, curr) => {
+  const output = markerArrCopy.reduce((acc: { [key: string]: MarkerType }, curr: MarkerType) => {
     acc[curr._id] = curr;
     return acc;
   }, {});

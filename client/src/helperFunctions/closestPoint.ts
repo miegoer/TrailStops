@@ -4,10 +4,10 @@ import placeMarkerBetweenPoints from "./placeMarkerBetweenPoints";
 //TODO Make the line more accurate on the longitude
 
 // Function to find the two closest points on the route to the clicked point
-function closestPoints(pointCoords) {
+function closestPoints(pointCoords: [number, number]) {
   
   // Sort the route by longitude
-  let sortedRoute = routeData.coordinates.slice().sort((a, b) => a[1] - b[1]);
+  let sortedRoute: number[][] = routeData.coordinates.slice().sort((a, b) => a[1] - b[1]);
 
   const [targetLon, targetLat] = pointCoords;
   const [low, high] = binarySearch(sortedRoute, targetLon);

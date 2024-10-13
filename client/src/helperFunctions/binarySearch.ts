@@ -1,4 +1,4 @@
-export default function binarySearch(sortedRoute, targetLon) {
+export default function binarySearch(sortedRoute: number[][], targetLon: number) {
   let low = 0;
   let high = sortedRoute.length - 1;
 
