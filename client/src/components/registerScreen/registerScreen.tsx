@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import DBService from '../../services/DBService';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +9,7 @@ function RegisterScreen() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({name:"",email:"", password:"", route:"0"});
   // function to handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     DBService.addUser(formData.name, formData.email, formData.password);
     navigate('/map', {state: { email: formData.email }});

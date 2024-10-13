@@ -1,3 +1,4 @@
+import React from 'react';
 import './searchResultScreen.css';
 import APIService from '../../services/googleAPIService';
 import { useState, useEffect } from 'react';
@@ -5,8 +6,14 @@ import DBService from '../../services/DBService';
 import { Button } from '@mui/material';
 import routeCalculation from '../../helperFunctions/routeCalculation';
 import { useUser } from '../../context/userContext';
+import { MarkerType } from '../../types/types';
 
-function SearchResultScreen({ marker, setMarker }) {
+interface SearchResultScreenProps {
+  marker: MarkerType;
+  setMarker: (marker: MarkerType) => void;
+}
+
+function SearchResultScreen({ marker, setMarker }: SearchResultScreenProps) {
   const { markers, setMarkers, settings } = useUser();
   const [nearAccommodation, setNearAccommodation] = useState([]);
   const [selectedAccommodation, setSelectedAccommodation] = useState("")
@@ -32,18 +39,18 @@ function SearchResultScreen({ marker, setMarker }) {
       }
   }, []);
 
-  function updateAccommodation (accommodation) {
+  function updateAccommodation (accommodation: string) {
     setSelectedAccommodation(accommodation)
     const updatedMarkers = { ...markers, [marker._id]:{...marker, hotel:accommodation}};
     setMarkers(updatedMarkers);
     DBService.addAccommodation("aidan@test.com", accommodation, marker._id)
   }
 
-  async function deleteMarker (markerId) {
+  async function deleteMarker (markerId: string) {
     DBService.removeMarker("aidan@test.com", markerId);
     const updatedMarkers = { ...markers };
     delete updatedMarkers[markerId];
-    const calculatedMarkers = await routeCalculation(Object.values(updatedMarkers), settings)
+    await routeCalculation(Object.values(updatedMarkers), settings)
     .then((calculatedMarkers) => {
       setMarkers(calculatedMarkers);
       setMarker(null);
