@@ -1,5 +1,6 @@
+import React from 'react';
 import './settings.css';
-import { Select, FormControl, Button, MenuItem } from '@mui/material';
+import { Select, FormControl, Button, MenuItem, SelectChangeEvent } from '@mui/material';
 import DBService from '../../services/DBService';
 import routeCalculation from '../../helperFunctions/routeCalculation';
 import { useEffect } from 'react';
@@ -22,16 +23,17 @@ function Settings() {
     updateMarkers();
   }, [settings]); // Trigger on settingsData change
 
-  const changeSpeedSetting = (event) => {
+  const changeSpeedSetting = (event: SelectChangeEvent<HTMLSelectElement>) => {
     setSettings({ ...settings, speed: Number(event.target.value) });
   };
 
-  const changeDistanceSetting = async (event) => {
-    setSettings({ ...settings, distance: event.target.value });
-    const updatedMarkers = await routeCalculation(Object.values(markers), { ...settings, distance: event.target.value });
-    DBService.updateAllMarkers(updatedMarkers);
-    setMarkers(updatedMarkers);
-  };
+  //TODO Implement change distance setting
+  // const changeDistanceSetting = async (event) => {
+  //   setSettings({ ...settings, distance: event.target.value });
+  //   const updatedMarkers = await routeCalculation(Object.values(markers), { ...settings, distance: event.target.value });
+  //   DBService.updateAllMarkers(updatedMarkers);
+  //   setMarkers(updatedMarkers);
+  // };
 
   return (
     <div style={{marginBottom:"10px"}}className="settingsScreen">

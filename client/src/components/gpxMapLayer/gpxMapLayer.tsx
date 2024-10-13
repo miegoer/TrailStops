@@ -5,8 +5,13 @@ import 'leaflet-gpx';
 import 'leaflet/dist/leaflet.css';
 import './gpxMapLayer.css'
 
+interface GPXLayerProps {
+  gpxFile: string; // Assuming the GPX file is passed as a string (e.g., URL or file path)
+  passRoute: (route: L.Layer[]) => void; // passRoute function accepts an array of Leaflet Layers
+}
+
 // function to generate the route line on the map
-const GPXLayer = ({ gpxFile, passRoute}) => {
+const GPXLayer: React.FC<GPXLayerProps> = ({ gpxFile, passRoute }) => {
   const map = useMap();
 
   useEffect(() => {

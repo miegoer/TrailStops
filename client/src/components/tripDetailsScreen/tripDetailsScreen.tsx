@@ -1,16 +1,23 @@
+import React from 'react';
 import './tripDetailsScreen.css';
 import { Button } from '@mui/material';
 import { useUser } from '../../context/userContext';
+import { MarkerType } from '../../types/types';
+import { Marker } from 'leaflet';
 
-function TripDetailsScreen({ setSelectedMarker }) {
+type TripDetailsScreenProps = {
+  setSelectedMarker: (marker: MarkerType) => void; // Assuming MarkerType is the type of your marker object
+};
+
+function TripDetailsScreen({ setSelectedMarker }: TripDetailsScreenProps) {
 
   const { markers, setTripDetailsOverlay } = useUser();
 
-  const firstMarker = Object.values(markers).find(marker => marker.order === 1) || {
+  const firstMarker: MarkerType | { prevDist: { dist: number; time: number } } = Object.values(markers).find((marker: MarkerType) => marker.order === 1) as MarkerType || {
     prevDist: { dist: 0, time: 0 }
   };
 
-  const sortedMarkers = Object.values(markers).sort((a, b) => (a.order || 0) - (b.order || 0));
+  const sortedMarkers = Object.values(markers).sort((a: MarkerType, b: MarkerType) => (a.order || 0) - (b.order || 0));
 
   return (
     <div className="tripDetailsScreen">
@@ -24,7 +31,7 @@ function TripDetailsScreen({ setSelectedMarker }) {
           Time to next stop: {firstMarker.prevDist?.time ?? 0} hrs
         </li>
 
-        {sortedMarkers.map((marker) => (
+        {sortedMarkers.map((marker: MarkerType) => (
           <li className='Item' key={marker._id}>
             Stop {marker.order ?? "Unknown"}: {marker.hotel || "No Accommodation Selected"}
             <br />

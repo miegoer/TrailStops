@@ -1,6 +1,12 @@
+import React from 'react';
 import './detailSummary.css';
+import { MarkerType } from '../../types/types';
 
-function DetailSummary({ markers }) {
+interface DetailSummaryProps {
+  markers: MarkerType[];
+}
+
+function DetailSummary({ markers }: DetailSummaryProps) {
 
   if (!markers || Object.keys(markers).length === 0) {
     return <div style={{zIndex:"-100", position:"absolute", top:"1px"}}>No markers placed!</div>;
