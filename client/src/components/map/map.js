@@ -29,8 +29,7 @@ const MapComponent = () => {
   const gpxFile = '/WHW.gpx';
   const [gpxRoute, setGpxRoute] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
-  const [detailsClicked, setDetailsClicked] = useState(false);
-  const { settings, setSettings, settingsOverlay, setSettingsOverlay, markers, setMarkers } = useUser();
+  const { settings, setSettings, settingsOverlay, setSettingsOverlay, tripDetailsOverlay, setTripDetailsOverlay, markers, setMarkers } = useUser();
 
   const setGpxRouteFunc = (route) => {
     setGpxRoute(route);
@@ -90,32 +89,6 @@ const MapComponent = () => {
     return null;
   };
 
-  // handler for placed marker being clicked
-  const MarkerClickHandler = (marker) => {
-    if (marker) {
-      setSelectedMarker(marker);
-    } else {
-      console.error("Marker not found in state");
-    }
-  };
-
-  // handler from tripDetails button being clicked
-  const TripDetailsClickHandler = () => {
-    setDetailsClicked(true);
-  }
-
-  const closeSearchOverlay = () => {
-    setSelectedMarker(null); // Hide the overlay
-  };
-
-  const closeDetailsOverlay = () => {
-    setDetailsClicked(false); // Hide the overlay
-  };
-
-  const closeSettingsOverlay = () => {
-    setSettingsOverlay(false); // Hide the overlay
-  };
-
   return (
     <>
     <div className='mapContainer'>
@@ -125,14 +98,14 @@ const MapComponent = () => {
       />
       <GPXLayer gpxFile={gpxFile} passRoute={setGpxRouteFunc}/>
       {Object.values(markers || {}).map((marker) => (
-        <Marker key={marker._id} position={[marker.position.lat, marker.position.lng]} icon={defaultIcon} eventHandlers={{ click: () => MarkerClickHandler(marker)}}/>
+        <Marker key={marker._id} position={[marker.position.lat, marker.position.lng]} icon={defaultIcon} eventHandlers={{ click: () => setSelectedMarker(marker)}}/>
       ))}
       <MapClickHandler />
     </MapContainer>
     <img className='backpackMapImg' src='backpack.png' alt='brown backpack open at the front showing a wilderness scene inside'/>
-    {(!selectedMarker && !detailsClicked && !settingsOverlay) && (
+    {(!selectedMarker && !tripDetailsOverlay && !settingsOverlay) && (
           <>
-            <Button variant='contained' className='tripDetails' onClick={TripDetailsClickHandler}>Trip Details</Button>
+            <Button variant='contained' className='tripDetails' onClick={() => setTripDetailsOverlay(true)}>Trip Details</Button>
             <img className='settings' src='settings.webp' alt='line render of a settings cog icon' onClick={() => setSettingsOverlay(true)} />
             <DetailSummary markers={markers}/>
           </>
@@ -140,17 +113,17 @@ const MapComponent = () => {
     </div>
     {selectedMarker && (
         <div className="overlay1" style={{ position: 'absolute', zIndex: 1000, top: 0, left: 0, width: '100%', height: '100%' }}>
-        <SearchResultScreen marker={selectedMarker} markers={markers} setMarkers={setMarkers} closeOverlay={closeSearchOverlay} settings={settings} />
+        <SearchResultScreen marker={selectedMarker} setMarker={setSelectedMarker} />
         </div>
         )}
-    {detailsClicked && (
+    {tripDetailsOverlay && (
         <div className="overlay2" style={{ position: 'absolute', zIndex: 1000, top: 0, left: 0, width: '100%', height: '100%' }}>
-        <TripDetailsScreen closeOverlay={closeDetailsOverlay} markers={markers} setSelectedMarker={setSelectedMarker}/>
+        <TripDetailsScreen setSelectedMarker={setSelectedMarker}/>
         </div>
         )}
     {settingsOverlay && (
       <div className="overlay3" style={{ position: 'absolute', zIndex: 1000, top: 0, left: 0, width: '100%', height: '100%' }}>
-      <Settings closeOverlay={closeSettingsOverlay} settingsData={settings} setSettingsData={setSettings} setSettingsClicked={setSettingsOverlay} markers={markers} setMarkers={setMarkers} settings={settings}/>
+      <Settings />
       </div>
     )}
     </>

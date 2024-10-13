@@ -5,13 +5,16 @@ const UserContext = createContext()
 const UserProvider = ({ children }) => {
   const [settings, setSettings] = useState({distance: "km", speed: 3});
   const [settingsOverlay, setSettingsOverlay] = useState(false);
+  const [tripDetailsOverlay, setTripDetailsOverlay] = useState(false);
   const [markers, setMarkers] = useState({});
   return (
     <UserContext.Provider value={{ 
       settings, 
       setSettings, 
       settingsOverlay, 
-      setSettingsOverlay, 
+      setSettingsOverlay,
+      tripDetailsOverlay,
+      setTripDetailsOverlay,
       markers, 
       setMarkers 
     }}>

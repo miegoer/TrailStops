@@ -4,8 +4,10 @@ import { useState, useEffect } from 'react';
 import DBService from '../../services/DBService';
 import { Button } from '@mui/material';
 import routeCalculation from '../../helperFunctions/routeCalculation';
+import { useUser } from '../../context/userContext';
 
-function SearchResultScreen({ marker, closeOverlay, markers, setMarkers, settings }) {
+function SearchResultScreen({ marker, setMarker }) {
+  const { markers, setMarkers, settings } = useUser();
   const [nearAccommodation, setNearAccommodation] = useState([]);
   const [selectedAccommodation, setSelectedAccommodation] = useState("")
 
@@ -44,7 +46,7 @@ function SearchResultScreen({ marker, closeOverlay, markers, setMarkers, setting
     const calculatedMarkers = await routeCalculation(Object.values(updatedMarkers), settings)
     .then((calculatedMarkers) => {
       setMarkers(calculatedMarkers);
-      closeOverlay();
+      setMarker(null);
     });
   };
 
@@ -84,7 +86,7 @@ function SearchResultScreen({ marker, closeOverlay, markers, setMarkers, setting
         <p>Selected accommodation: 
         {selectedAccommodation === "" ? " no accommodation selected" : ` ${selectedAccommodation}`}
       </p>
-      <Button variant='contained' style={{marginRight: "10px"}} onClick={() => closeOverlay()}>Back</Button>
+      <Button variant='contained' style={{marginRight: "10px"}} onClick={() => setMarker(null)}>Back</Button>
       <Button variant='contained' onClick={() => deleteMarker(marker._id)}>Delete Marker</Button>
       </div>
     </div>

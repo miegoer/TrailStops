@@ -1,9 +1,10 @@
 import './tripDetailsScreen.css';
-import { useEffect } from 'react';
 import { Button } from '@mui/material';
+import { useUser } from '../../context/userContext';
 
-function TripDetailsScreen({ closeOverlay, markers = {}, setSelectedMarker }) {
+function TripDetailsScreen({ setSelectedMarker }) {
 
+  const { markers, setTripDetailsOverlay } = useUser();
 
   const firstMarker = Object.values(markers).find(marker => marker.order === 1) || {
     prevDist: { dist: 0, time: 0 }
@@ -35,7 +36,7 @@ function TripDetailsScreen({ closeOverlay, markers = {}, setSelectedMarker }) {
               variant='contained'
               onClick={() => {
                 setSelectedMarker(marker);
-                closeOverlay();
+                setTripDetailsOverlay(false);
               }}
             >
               Edit
@@ -46,7 +47,7 @@ function TripDetailsScreen({ closeOverlay, markers = {}, setSelectedMarker }) {
         <li>End Point</li>
       </ul>
 
-      <Button variant='contained' className='backButton' onClick={closeOverlay}>Back</Button>
+      <Button variant='contained' className='backButton' onClick={() => setTripDetailsOverlay(false)}>Back</Button>
     </div>
   );
 }
