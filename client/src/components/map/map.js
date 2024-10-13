@@ -14,6 +14,7 @@ import DetailSummary from '../detailSummary/detailSummary';
 import SearchResultScreen from '../searchResultScreen/searchResultScreen';
 import Settings from '../settings/settings';
 import TripDetailsScreen from '../tripDetailsScreen/tripDetailsScreen';
+import { useUser } from '../../context/userContext';
 
 // set icon for placed markers
 const defaultIcon = L.icon({
@@ -26,12 +27,10 @@ const defaultIcon = L.icon({
 
 const MapComponent = () => {
   const gpxFile = '/WHW.gpx';
-  const [markers, setMarkers] = useState({});
   const [gpxRoute, setGpxRoute] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [detailsClicked, setDetailsClicked] = useState(false);
-  const [settingsClicked, setSettingsClicked] = useState(false);
-  const [settingsData, setSettingsData] = useState({distance: "km", speed: 3});
+  const { settings, setSettings, settingsOverlay, setSettingsOverlay, markers, setMarkers } = useUser();
 
   const setGpxRouteFunc = (route) => {
     setGpxRoute(route);
@@ -48,7 +47,7 @@ const MapComponent = () => {
         if (dataOut && Object.keys(dataOut).length > 0) {
           const firstMarker = dataOut[Object.keys(dataOut)[0]];
           if (firstMarker.walkingSpeed) {
-            setSettingsData(prev => ({
+            setSettings(prev => ({
               ...prev,
               speed: firstMarker.walkingSpeed,
             }));
@@ -73,14 +72,14 @@ const MapComponent = () => {
             hotel: "",
             prevDist: { dist: 0, time: 0 },
             nextDist: { dist: 0, time: 0 },
-            walkingSpeed: settingsData.speed,
-            distanceMeasure: settingsData.distance
+            walkingSpeed: settings.speed,
+            distanceMeasure: settings.distance
           };
           // update markers state and add maker to database
           let updatedMarkers = {...markers, [newMarker._id]:newMarker};
-          const calculatedMarkers = await routeCalculation(Object.values(updatedMarkers), settingsData);
+          const calculatedMarkers = await routeCalculation(Object.values(updatedMarkers), settings);
           setMarkers(calculatedMarkers);
-          DBService.addMarker("aidan@test.com", calculatedMarkers[newMarker._id], calculatedMarkers, settingsData);
+          DBService.addMarker("aidan@test.com", calculatedMarkers[newMarker._id], calculatedMarkers, settings);
           // timeout to make sure point is added to state.
           setTimeout(() => {
             setSelectedMarker(calculatedMarkers[newMarker._id]);
@@ -114,7 +113,7 @@ const MapComponent = () => {
   };
 
   const closeSettingsOverlay = () => {
-    setSettingsClicked(false); // Hide the overlay
+    setSettingsOverlay(false); // Hide the overlay
   };
 
   return (
@@ -131,17 +130,17 @@ const MapComponent = () => {
       <MapClickHandler />
     </MapContainer>
     <img className='backpackMapImg' src='backpack.png' alt='brown backpack open at the front showing a wilderness scene inside'/>
-    {(!selectedMarker && !detailsClicked && !settingsClicked) && (
+    {(!selectedMarker && !detailsClicked && !settingsOverlay) && (
           <>
             <Button variant='contained' className='tripDetails' onClick={TripDetailsClickHandler}>Trip Details</Button>
-            <img className='settings' src='settings.webp' alt='line render of a settings cog icon' onClick={() => setSettingsClicked(true)} />
+            <img className='settings' src='settings.webp' alt='line render of a settings cog icon' onClick={() => setSettingsOverlay(true)} />
             <DetailSummary markers={markers}/>
           </>
         )}
     </div>
     {selectedMarker && (
         <div className="overlay1" style={{ position: 'absolute', zIndex: 1000, top: 0, left: 0, width: '100%', height: '100%' }}>
-        <SearchResultScreen marker={selectedMarker} markers={markers} setMarkers={setMarkers} closeOverlay={closeSearchOverlay} />
+        <SearchResultScreen marker={selectedMarker} markers={markers} setMarkers={setMarkers} closeOverlay={closeSearchOverlay} settings={settings} />
         </div>
         )}
     {detailsClicked && (
@@ -149,9 +148,9 @@ const MapComponent = () => {
         <TripDetailsScreen closeOverlay={closeDetailsOverlay} markers={markers} setSelectedMarker={setSelectedMarker}/>
         </div>
         )}
-    {settingsClicked && (
+    {settingsOverlay && (
       <div className="overlay3" style={{ position: 'absolute', zIndex: 1000, top: 0, left: 0, width: '100%', height: '100%' }}>
-      <Settings closeOverlay={closeSettingsOverlay} settingsData={settingsData} setSettingsData={setSettingsData} setSettingsClicked={setSettingsClicked} markers={markers} setMarkers={setMarkers} settings={settingsData}/>
+      <Settings closeOverlay={closeSettingsOverlay} settingsData={settings} setSettingsData={setSettings} setSettingsClicked={setSettingsOverlay} markers={markers} setMarkers={setMarkers} settings={settings}/>
       </div>
     )}
     </>

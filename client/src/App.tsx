@@ -1,3 +1,4 @@
+import React from 'react';
 import Map from './components/map/map';
 import { createBrowserRouter,RouterProvider, } from "react-router-dom";
 import ErrorPage from './components/errorScreen/errorScreen';
@@ -5,6 +6,7 @@ import LoginScreen from './components/loginScreen/loginScreen';
 import RegisterScreen from './components/registerScreen/registerScreen';
 import Settings from './components/settings/settings';
 import './App.css';
+import { UserProvider } from './context/userContext';
 
 // main app component, handles routing
 function App() {
@@ -32,7 +34,9 @@ function App() {
   ]);
 
   return (
-    <RouterProvider router={router} />
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
   );
 }
 

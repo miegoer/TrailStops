@@ -3,29 +3,32 @@ import { Select, FormControl, Button, MenuItem } from '@mui/material';
 import DBService from '../../services/DBService';
 import routeCalculation from '../../helperFunctions/routeCalculation';
 import { useEffect } from 'react';
+import { useUser } from '../../context/userContext';
 
-function Settings({ closeOverlay, settingsData, setSettingsData, markers, setMarkers }) {
+function Settings() {
+
+  const { settings, setSettings, setSettingsOverlay, markers, setMarkers } = useUser();
 
   // Effect to handle updates based on settingsData changes
   useEffect(() => {
     const updateMarkers = async () => {
-      if (settingsData.speed !== undefined) {
-        const updatedMarkers = await routeCalculation(Object.values(markers), settingsData);
+      if (settings.speed !== undefined) {
+        const updatedMarkers = await routeCalculation(Object.values(markers), settings);
         DBService.updateAllMarkers(updatedMarkers);
         setMarkers(updatedMarkers);
       }
     };
 
     updateMarkers();
-  }, [settingsData]); // Trigger on settingsData change
+  }, [settings]); // Trigger on settingsData change
 
   const changeSpeedSetting = (event) => {
-    setSettingsData({ ...settingsData, speed: Number(event.target.value) });
+    setSettings({ ...settings, speed: Number(event.target.value) });
   };
 
   const changeDistanceSetting = async (event) => {
-    setSettingsData({ ...settingsData, distance: event.target.value });
-    const updatedMarkers = await routeCalculation(Object.values(markers), { ...settingsData, distance: event.target.value });
+    setSettings({ ...settings, distance: event.target.value });
+    const updatedMarkers = await routeCalculation(Object.values(markers), { ...settings, distance: event.target.value });
     DBService.updateAllMarkers(updatedMarkers);
     setMarkers(updatedMarkers);
   };
@@ -35,7 +38,7 @@ function Settings({ closeOverlay, settingsData, setSettingsData, markers, setMar
       <h1>Settings</h1>
       <form style={{marginBottom:"10px"}}>
         <FormControl>
-          <Select value={settingsData.speed} onChange={changeSpeedSetting}>
+          <Select value={settings.speed} onChange={changeSpeedSetting}>
             <MenuItem value="2">2Kmph - Slow</MenuItem>
             <MenuItem value="3">3Kmph - Regular</MenuItem>
             <MenuItem value="4">4Kmph - Fast</MenuItem>
@@ -49,7 +52,7 @@ function Settings({ closeOverlay, settingsData, setSettingsData, markers, setMar
           </Select>
         </FormControl> */}
       </form>
-      <Button variant='contained' className='backButton' onClick={closeOverlay}>Back</Button>
+      <Button variant='contained' className='backButton' onClick={() => setSettingsOverlay(false)}>Back</Button>
     </div>
   );
 }
