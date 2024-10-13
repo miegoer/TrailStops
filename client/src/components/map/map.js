@@ -151,7 +151,7 @@ const MapComponent = () => {
         )}
     {settingsClicked && (
       <div className="overlay3" style={{ position: 'absolute', zIndex: 1000, top: 0, left: 0, width: '100%', height: '100%' }}>
-      <Settings closeOverlay={closeSettingsOverlay} settingsData={settingsData} setSettingsData={setSettingsData} setSettingsClicked={setSettingsClicked} markers={markers} setMarkers={setMarkers}/>
+      <Settings closeOverlay={closeSettingsOverlay} settingsData={settingsData} setSettingsData={setSettingsData} setSettingsClicked={setSettingsClicked} markers={markers} setMarkers={setMarkers} settings={settingsData}/>
       </div>
     )}
     </>

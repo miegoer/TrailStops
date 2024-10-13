@@ -5,7 +5,7 @@ import DBService from '../../services/DBService';
 import { Button } from '@mui/material';
 import routeCalculation from '../../helperFunctions/routeCalculation';
 
-function SearchResultScreen({ marker, closeOverlay, markers, setMarkers }) {
+function SearchResultScreen({ marker, closeOverlay, markers, setMarkers, settings }) {
   const [nearAccommodation, setNearAccommodation] = useState([]);
   const [selectedAccommodation, setSelectedAccommodation] = useState("")
 
@@ -41,7 +41,7 @@ function SearchResultScreen({ marker, closeOverlay, markers, setMarkers }) {
     DBService.removeMarker("aidan@test.com", markerId);
     const updatedMarkers = { ...markers };
     delete updatedMarkers[markerId];
-    const calculatedMarkers = await routeCalculation(Object.values(updatedMarkers))
+    const calculatedMarkers = await routeCalculation(Object.values(updatedMarkers), settings)
     .then((calculatedMarkers) => {
       setMarkers(calculatedMarkers);
       closeOverlay();
