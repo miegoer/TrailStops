@@ -94,7 +94,7 @@ async function addAccommodation(email, hotel, markerId) {
   }
 }
 
-async function removeMarker(userId, markerId) { // TODO Fix bug where it marker is only delete after second attempt sometimes.
+async function removeMarker(userId, markerId) { 
   try {
     const response = await fetch('http://localhost:3001/mapMarkers', {
       method:'DELETE',

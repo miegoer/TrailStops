@@ -21,7 +21,7 @@ async function extractAccommodations (lat, lng) {
   }
   let outputArr = []
   for (let i = 0; i < results.length; i++) {
-    if (!results[i].photos) { // TODO: fix photos
+    if (!results[i].photos) {
       continue;
     }
     const url  = await fetchAccommodationPicture(results[i].photos[0].photo_reference);
