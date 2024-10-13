@@ -1,3 +1,4 @@
+import React from 'react';
 import './map.css';
 import { useEffect, useState } from 'react';
 import { Marker, MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
@@ -15,6 +16,7 @@ import SearchResultScreen from '../searchResultScreen/searchResultScreen';
 import Settings from '../settings/settings';
 import TripDetailsScreen from '../tripDetailsScreen/tripDetailsScreen';
 import { useUser } from '../../context/userContext';
+import { MarkerType, SettingsType } from '../../types/types';
 
 // set icon for placed markers
 const defaultIcon = L.icon({
@@ -31,14 +33,14 @@ const MapComponent = () => {
   const [selectedMarker, setSelectedMarker] = useState(null);
   const { settings, setSettings, settingsOverlay, setSettingsOverlay, tripDetailsOverlay, setTripDetailsOverlay, markers, setMarkers } = useUser();
 
-  const setGpxRouteFunc = (route) => {
+  const setGpxRouteFunc = (route: L.Layer[]) => {
     setGpxRoute(route);
   }
 
   useEffect(() => {
     DBService.getMarkers("aidan@test.com").then((data) => {
       if (data) {
-        const dataOut = data.reduce((acc, curr) => {
+        const dataOut = data.reduce((acc: { [key: string]: MarkerType }, curr: MarkerType) => {
           acc[curr._id] = curr;
           return acc;
         }, {})
@@ -46,7 +48,7 @@ const MapComponent = () => {
         if (dataOut && Object.keys(dataOut).length > 0) {
           const firstMarker = dataOut[Object.keys(dataOut)[0]];
           if (firstMarker.walkingSpeed) {
-            setSettings(prev => ({
+            setSettings((prev: { [key: string]: SettingsType }) => ({
               ...prev,
               speed: firstMarker.walkingSpeed,
             }));
@@ -58,7 +60,7 @@ const MapComponent = () => {
   
 
   // handler from marker being added to map
-  const MapClickHandler = () => {
+  const MapClickHandler: React.FC = () => {
     useMapEvents({
       click: async (e) => { 
         const { lat, lng } = e.latlng;  // get position of click
@@ -97,7 +99,7 @@ const MapComponent = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <GPXLayer gpxFile={gpxFile} passRoute={setGpxRouteFunc}/>
-      {Object.values(markers || {}).map((marker) => (
+      {Object.values(markers || {}).map((marker: MarkerType) => (
         <Marker key={marker._id} position={[marker.position.lat, marker.position.lng]} icon={defaultIcon} eventHandlers={{ click: () => setSelectedMarker(marker)}}/>
       ))}
       <MapClickHandler />

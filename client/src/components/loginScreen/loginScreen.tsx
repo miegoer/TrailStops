@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import DBService from '../../services/DBService';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +13,7 @@ function LoginScreen() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // function to handle form submission
-  function handleSubmit(e) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     const emailError = formData.email === "";
