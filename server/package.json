@@ -4,7 +4,7 @@
   "main": "index.tsx",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.tsx"
+    "start": "node index.ts"
   },
   "author": "",
   "license": "ISC",
@@ -15,5 +15,9 @@
     "express": "^4.21.0",
     "mongoose": "^8.6.3",
     "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0"
   }
 }

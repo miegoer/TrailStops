@@ -1,6 +1,7 @@
 require('dotenv').config({path: '.env'});
+import { Request, Response } from "express";
 
-exports.getAccommodation = async (req, res) => {
+export const getGoogleAccommodation = async (req: Request, res: Response) => {
   try {
     const { lon, lat } = req.query;
     const apiKey = process.env.GOOGLE_API_KEY;
@@ -13,7 +14,7 @@ exports.getAccommodation = async (req, res) => {
   }
 }
 
-exports.getAccommodationPic = async (req, res) => {
+export const getAccommodationPic = async (req: Request, res: Response) => {
   try {
     const { photo_reference } = req.query;
     const apiKey = process.env.GOOGLE_API_KEY;
@@ -33,7 +34,7 @@ exports.getAccommodationPic = async (req, res) => {
   }
 }
 
-exports.getAccomodationDetails = async (req, res) => {
+export const getAccommodationDetails = async (req: Request, res: Response) => {
   try {
     const { place_id } = req.query;
     const apiKey = process.env.GOOGLE_API_KEY;

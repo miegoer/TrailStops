@@ -1,4 +1,6 @@
-async function getMarkers (user_id) {
+import { MarkerType, SettingsType } from "../types/types";
+
+async function getMarkers (user_id: string) {
   try {
     const response = await fetch(`http://localhost:3001/mapMarkers?user_id=${user_id}`);
     const data = await response.json();
@@ -8,7 +10,7 @@ async function getMarkers (user_id) {
   }
 }
 
-async function addMarker (user_id, marker, updatedMarkers, settings ) {
+async function addMarker (user_id: string, marker: MarkerType, updatedMarkers: MarkerType[], settings: SettingsType ) {
   try {
     const _id = marker._id
     const response = await fetch('http://localhost:3001/mapMarkers', {
@@ -25,7 +27,7 @@ async function addMarker (user_id, marker, updatedMarkers, settings ) {
   }
 }
 
-async function updateAllMarkers (markers) {
+async function updateAllMarkers (markers: MarkerType[]) {
   try {
     const response = await fetch('http://localhost:3001/updateAllMarkers', {
       method: 'PUT',
@@ -41,7 +43,7 @@ async function updateAllMarkers (markers) {
   }
 }
 
-async function addUser (name, email, password) {
+async function addUser (name: string, email: string, password: string) {
   try {
     const response = await fetch('http://localhost:3001/user', {
       method: 'POST',
@@ -57,7 +59,7 @@ async function addUser (name, email, password) {
   }
 }
 
-async function getUser (email) {
+async function getUser (email: string) {
   try {
     const response = await fetch(`http://localhost:3001/user?email=${email}`);
     const data = await response.json();
@@ -67,7 +69,7 @@ async function getUser (email) {
   }
 }
 
-async function getAccommodation (email, markerId) {
+async function getAccommodation (email: string, markerId: string) {
   try {
     const response = await fetch(`http://localhost:3001/accommodation?user_id=${email}&markerId=${markerId}`);
     const data = await response.json();
@@ -77,7 +79,7 @@ async function getAccommodation (email, markerId) {
   }
 }
 
-async function addAccommodation(email, hotel, markerId) {
+async function addAccommodation(email: string, hotel: string, markerId: string) {
   try {
     const response = await fetch('http://localhost:3001/accommodation', {
       method: 'PUT',
@@ -94,7 +96,7 @@ async function addAccommodation(email, hotel, markerId) {
   }
 }
 
-async function removeMarker(userId, markerId) { 
+async function removeMarker(userId: string, markerId: string) { 
   try {
     const response = await fetch('http://localhost:3001/mapMarkers', {
       method:'DELETE',

@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    // ... other options ...
+    "outDir": "build",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": false,
+    "noEmit": false,
+    "allowJs": true
+  }
+}

@@ -1,8 +1,9 @@
-const express = require('express')
-const router = require('./router')
+import express from 'express';
+import router from './router';
+import cors from 'cors';
+
 const app = express()
 const port = 3001
-const cors = require('cors');
 
 app.use(cors())
 app.use(express.json());
