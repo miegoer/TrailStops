@@ -6,14 +6,14 @@ TrailStops is a desktop based web application to plan out your long distance hik
 
 ### Technologies
 
-React - Easy to setup and customize. A bunch of relevant libraries are available that work with react and do what I needed.
-Express - Could of picked any backend framework but was happy with Express.
-Mongoose - No SQL based server was first choice due to users being able to generate any number of stops.
-Material UI - Used for basic user interface elements.
-Leaflet Maps - Library used to render map on screen. Free, open-source, and relatively pain free to work with.
-Leaflet-gpx - Library to convert GPX file route data to be useable format.
-react-router-dom - Used for client side routing and state management.
-Google Places API - Used for performing nearby search for relevant hotels/ campsites as well as to get general details and images.
+React - Easy to setup and customize. A bunch of relevant libraries are available that work with react and do what I needed.<br>
+Express - Could of picked any backend framework but was happy with Express.<br>
+Mongoose - No SQL based server was first choice due to users being able to generate any number of stops.<br>
+Material UI - Used for basic user interface elements.<br>
+Leaflet Maps - Library used to render map on screen. Free, open-source, and relatively pain free to work with.<br>
+Leaflet-gpx - Library to convert GPX file route data to be useable format.<br>
+react-router-dom - Used for client side routing and state management.<br>
+Google Places API - Used for performing nearby search for relevant hotels/ campsites as well as to get general details and images.<br>
 
 ### Main Features
 - User Registration and Login
