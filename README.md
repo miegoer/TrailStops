@@ -32,10 +32,11 @@ Google Places API - Used for performing nearby search for relevant hotels/ camps
 - proper login functionality (authentication, password hashing)
 
 ### Install and run app locally
-1. cd client, npm i
-2. cd server, npm i
-3. cd client, npm start
-4. cd server, node index.js
+1. fill in .env file
+2. cd client, npm i
+3. cd server, npm i
+4. cd client, npm start
+5. cd server, node index.js
 
 ### Project structure
 /TrailStops<br>
