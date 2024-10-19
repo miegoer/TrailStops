@@ -39,26 +39,19 @@ Google Places API - Used for performing nearby search for relevant hotels/ camps
 
 ### Project structure
 /TrailStops
-├── client
-│   ├── public // imgs & gpx route data
-│   │   └── index.html // top level of react app
-│   ├── src
-│   │   ├── components
-│   │   ├── helperFunctions // mainly distance calculations and marker placement functions
-│   │   └── services // services to access the backend server API requests
-│   ├── app.js
-│   ├── index.js
-│   └── setupTests  // Jest tests
-├── server
-│   ├── controllers // fetch requests
-│   ├── models  // Mongoose setup
-│   ├── index.js  // Express setup
-│   └── router.js
-└── .env files  // API keys
-
-### development notes (issues ive left for later)
-- routeData file was a quick fix that can be replaced with WHW.gpx and createGPXArray so.
-- closestPoint.js placed markers can sometimes snap to the wrong point on the longitude
-- no real login implementation, just hardcoded the same email (aidan@test.com) address everywhere needed so login should always be with this email
-- Implemented but ommited way to select kilometers or miles on settings page and have it update the distances but need to also implement the change in what is shown throughout the app (km or mile) after the distance number.
-- sometimes get undefined lat or lon errors in from haversine calculation when placing first marker (???)
+├── client<br>
+│   ├── public // imgs & gpx route data<br>
+│   │   └── index.html // top level of react app<br>
+│   ├── src<br>
+│   │   ├── components<br>
+│   │   ├── helperFunctions // mainly distance calculations and marker placement functions<br>
+│   │   └── services // services to access the backend server API requests<br>
+│   ├── app.js<br>
+│   ├── index.js<br>
+│   └── setupTests  // Jest tests<br>
+├── server<br>
+│   ├── controllers // fetch requests<br>
+│   ├── models  // Mongoose setup<br>
+│   ├── index.js  // Express setup<br>
+│   └── router.js<br>
+└── .env files  // API keys<br>
