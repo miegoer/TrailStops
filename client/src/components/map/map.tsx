@@ -48,7 +48,7 @@ const MapComponent = () => {
         if (dataOut && Object.keys(dataOut).length > 0) {
           const firstMarker = dataOut[Object.keys(dataOut)[0]];
           if (firstMarker.walkingSpeed) {
-            setSettings((prev: { [key: string]: SettingsType }) => ({
+            setSettings((prev: { distance: string; speed: number }) => ({
               ...prev,
               speed: firstMarker.walkingSpeed,
             }));
@@ -66,6 +66,12 @@ const MapComponent = () => {
         const { lat, lng } = e.latlng;  // get position of click
         if (gpxRoute) {
           const closestPoint = closestPoints([lat, lng]); // snap clicked position to route
+          const distanceToRoute = e.latlng.distanceTo(L.latLng(closestPoint[1], closestPoint[0]));
+
+          // Define a threshold for how close the click must be to the route (e.g., 1 kilometer)
+          const thresholdDistance = 500; // Adjust this threshold as needed
+
+          if (distanceToRoute <= thresholdDistance) {
           const newMarker = {
             _id: uuidv4(),
             user_id: 'aidan@test.com',
@@ -85,6 +91,7 @@ const MapComponent = () => {
           setTimeout(() => {
             setSelectedMarker(calculatedMarkers[newMarker._id]);
           }, 100)
+        }
         }
       },
     });
