@@ -49,8 +49,8 @@ function SearchResultScreen({ marker, setMarker }: SearchResultScreenProps) {
   async function deleteMarker (markerId: string) {
     DBService.removeMarker("aidan@test.com", markerId);
     const updatedMarkers = { ...markers };
-    delete updatedMarkers[markerId];
-    await routeCalculation(Object.values(updatedMarkers), settings)
+    delete updatedMarkers[markerId as keyof typeof updatedMarkers];
+    await routeCalculation(Object.values(updatedMarkers).map((value): MarkerType => value as MarkerType), settings)
     .then((calculatedMarkers) => {
       setMarkers(calculatedMarkers);
       setMarker(null);

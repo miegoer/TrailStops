@@ -1,4 +1,4 @@
-const mongoose = require('./');
+import mongoose from './index'
 
 const Schema = mongoose.Schema;
 
@@ -29,7 +29,5 @@ const UserMarkersSchema = new mongoose.Schema({
   distanceMeasure: { type: String, required: true },
 });
 
-const User = mongoose.model('User', userSchema);
-const UserMarkers = mongoose.model('UserMarkers', UserMarkersSchema);
-
-module.exports = { User, UserMarkers };
+export const User = mongoose.model('User', userSchema);
+export const UserMarkers = mongoose.model('UserMarkers', UserMarkersSchema);

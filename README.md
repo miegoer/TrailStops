@@ -36,7 +36,7 @@ Google Places API - Used for performing nearby search for relevant hotels/ camps
 2. cd client, npm i
 3. cd server, npm i
 4. cd client, npm start
-5. cd server, node index.js
+5. cd server, mpx tsx index.ts
 
 ### Project structure
 /TrailStops<br>

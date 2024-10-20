@@ -1,4 +1,4 @@
-const { User, UserMarkers } = require('../models/schema');
+import { User, UserMarkers } from '../models/schema';
 import { Request, Response } from "express";
 import { MarkerType } from "../types/types";
 
@@ -6,7 +6,7 @@ export const getMarkers = async (req: Request, res: Response) => {
   try {
     const { user_id } = req.query;
     const response = await UserMarkers.find({user_id: user_id})
-    const positions = response.map((marker: MarkerType) => marker);
+    const positions = response.map(marker => marker);
     res.status(200).json(positions);
   } catch (error) {
     res.status(500).send(`Server Error0: ${error}`);
