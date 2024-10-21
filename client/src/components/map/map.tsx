@@ -16,7 +16,7 @@ import SearchResultScreen from '../searchResultScreen/searchResultScreen';
 import Settings from '../settings/settings';
 import TripDetailsScreen from '../tripDetailsScreen/tripDetailsScreen';
 import { useUser } from '../../context/userContext';
-import { MarkerType, SettingsType } from '../../types/types';
+import { MarkerType, RoutePoint } from '../../types/types';
 
 // set icon for placed markers
 const defaultIcon = L.icon({
@@ -63,10 +63,9 @@ const MapComponent = () => {
   const MapClickHandler: React.FC = () => {
     useMapEvents({
       click: async (e) => { 
-        const { lat, lng } = e.latlng;  // get position of click
         if (gpxRoute) {
-          const closestPoint = closestPoints([lat, lng]); // snap clicked position to route
-          const distanceToRoute = e.latlng.distanceTo(L.latLng(closestPoint[1], closestPoint[0]));
+          const closestPoint: RoutePoint = closestPoints(e.latlng); // snap clicked position to route
+          const distanceToRoute = e.latlng.distanceTo(L.latLng(closestPoint.lat, closestPoint.lng));
 
           // Define a threshold for how close the click must be to the route (e.g., 1 kilometer)
           const thresholdDistance = 500; // Adjust this threshold as needed
@@ -75,7 +74,7 @@ const MapComponent = () => {
           const newMarker = {
             _id: uuidv4(),
             user_id: 'aidan@test.com',
-            position: L.latLng([closestPoint[1], closestPoint[0]]),
+            position: L.latLng([closestPoint.lat, closestPoint.lng]),
             hotel: "",
             prevDist: { dist: 0, time: 0 },
             nextDist: { dist: 0, time: 0 },

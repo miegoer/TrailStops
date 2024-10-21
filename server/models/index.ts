@@ -8,4 +8,4 @@ async function main() {
 
 main();
 
-module.exports = mongoose;
+export default mongoose;

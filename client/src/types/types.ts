@@ -19,3 +19,8 @@ export interface SettingsType {
   speed: number;
   distance: string;
 }
+
+export interface RoutePoint {
+  lat: number;
+  lng: number;
+}
