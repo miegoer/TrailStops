@@ -40,13 +40,10 @@ const MapComponent = () => {
   useEffect(() => {
     DBService.getMarkers("aidan@test.com").then((data) => {
       if (data) {
-        const dataOut = data.reduce((acc: { [key: string]: MarkerType }, curr: MarkerType) => {
-          acc[curr._id] = curr;
-          return acc;
-        }, {})
-        setMarkers(dataOut);
-        if (dataOut && Object.keys(dataOut).length > 0) {
-          const firstMarker = dataOut[Object.keys(dataOut)[0]];
+        setMarkers(data);
+  
+        if (data.length > 0) {
+          const firstMarker = data[0];
           if (firstMarker.walkingSpeed) {
             setSettings((prev: { distance: string; speed: number }) => ({
               ...prev,
@@ -57,7 +54,6 @@ const MapComponent = () => {
       }
     });
   }, []);
-  
 
   // handler from marker being added to map
   const MapClickHandler: React.FC = () => {
@@ -76,14 +72,17 @@ const MapComponent = () => {
             user_id: 'aidan@test.com',
             position: L.latLng([closestPoint.lat, closestPoint.lng]),
             hotel: "",
+            prevIndex: 0,
+            nextIndex: 0,
             prevDist: { dist: 0, time: 0 },
             nextDist: { dist: 0, time: 0 },
             walkingSpeed: settings.speed,
             distanceMeasure: settings.distance
           };
           // update markers state and add maker to database
-          let updatedMarkers = {...markers, [newMarker._id]:newMarker};
-          const calculatedMarkers = await routeCalculation(Object.values(updatedMarkers), settings);
+          console.log(markers);
+          let updatedMarkers: MarkerType[] = [...markers, newMarker];
+          const calculatedMarkers = await routeCalculation(updatedMarkers, settings);
           setMarkers(calculatedMarkers);
           DBService.addMarker("aidan@test.com", calculatedMarkers[newMarker._id], calculatedMarkers, settings);
           // timeout to make sure point is added to state.

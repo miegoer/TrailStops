@@ -20,10 +20,12 @@ async function routeCalculation (markerArr: MarkerType[], calculationSettings: {
   let markerArrCopy = JSON.parse(JSON.stringify(markerArr));
   // find where the markers fall between in the route
   for (let i = 0; i < markerArrCopy.length; i++) {  // loop through markerArr
-    for (let j = 0; j < routeArr.length - 1; j++) { // loop through routeArr
-      if (isMarkerBetweenRoutePoints(markerArrCopy[i], routeArr[j], routeArr[j + 1])) { 
-        markerArrCopy[i].prevIndex = j
-        markerArrCopy[i].nextIndex = j+1
+    if (!markerArrCopy[i].prevIndex && !markerArrCopy[i].nextIndex) {
+      for (let j = 0; j < routeArr.length - 1; j++) { // loop through routeArr
+        if (isMarkerBetweenRoutePoints(markerArrCopy[i], routeArr[j], routeArr[j + 1])) { 
+          markerArrCopy[i].prevIndex = j
+          markerArrCopy[i].nextIndex = j+1
+        }
       }
     }
   }
@@ -72,13 +74,7 @@ async function routeCalculation (markerArr: MarkerType[], calculationSettings: {
     markerArrCopy[i].order = i +1;
   }
 
-  // change markers back to object
-  const output = markerArrCopy.reduce((acc: { [key: string]: MarkerType }, curr: MarkerType) => {
-    acc[curr._id] = curr;
-    return acc;
-  }, {});
-
-  return output;
+  return markerArrCopy;
 }
 
 export default routeCalculation;

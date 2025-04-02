@@ -1,9 +1,8 @@
 export interface MarkerType {
   _id: string;
-  lat: number;
-  lng: number;
-  order: number;
   hotel: string;
+  prevIndex: number;
+  nextIndex: number;
   prevDist?: {
     dist: number;
     time: number;
